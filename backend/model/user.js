@@ -17,10 +17,10 @@ const userSchema = new mongoose.Schema({
     minLength: [4, "Password should be greater than 4 characters"],
     select: false,
   },
- 
+
   avatar: {
-      type: String,
-      required: true,
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
