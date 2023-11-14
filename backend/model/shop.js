@@ -2,27 +2,42 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const userSchema = new mongoose.Schema({
+const shopSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter your name!"],
+    required: [true, "Please enter your shop name!"],
   },
   email: {
     type: String,
-    required: [true, "Please enter your email!"],
+    required: [true, "Please enter your shop email address"],
   },
   password: {
     type: String,
     required: [true, "Please enter your password"],
-    minLength: [4, "Password should be greater than 4 characters"],
+    minLength: [6, "Password should be greater than 6 characters"],
     select: false,
+  },
+  description: {
+    type: String,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: Number,
+    required: true,
   },
   role: {
     type: String,
-    default: "user",
+    default: "Seller",
   },
   avatar: {
     type: String,
+    required: true,
+  },
+  zipCode: {
+    type: Number,
     required: true,
   },
   createdAt: {
@@ -33,25 +48,25 @@ const userSchema = new mongoose.Schema({
   resetPasswordTime: Date,
 });
 
-//  Hash password
-userSchema.pre("save", async function (next) {
+// Hash password
+shopSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
-
   this.password = await bcrypt.hash(this.password, 10);
 });
 
 // jwt token
-userSchema.methods.getJwtToken = function () {
+shopSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRES,
   });
 };
 
-// compare password
-userSchema.methods.comparePassword = async function (enteredPassword) {
+// comapre password
+shopSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-const User = mongoose.model("User", userSchema);
-export default User;
+
+const Shop = mongoose.model("Shop", shopSchema);
+export default Shop;

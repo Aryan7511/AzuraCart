@@ -4,6 +4,7 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   loading: false,
+  error: null,
 };
 
 export const userReducer = createReducer(initialState, {

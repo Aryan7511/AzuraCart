@@ -31,8 +31,10 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 
 // import routes
 import user from "./controller/user.js";
+import shop from "./controller/shop.js";
 
 app.use("/api/v2/user", user);
+app.use("/api/v2/shop", shop);
 
 // it's for ErrorHandling
 app.use(ErrorHandler);

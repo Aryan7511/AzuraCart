@@ -10,7 +10,6 @@ import fs from "fs";
 import sendToken from "../utils/jwtToken.js";
 import { isAuthenticated } from "../middleware/auth.js";
 
-
 const router = express.Router();
 
 // create user
@@ -27,7 +26,7 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
         if (err) {
           console.log(err);
           res.status(500).json({ message: "Error while deleting file" });
-        } 
+        }
       });
       return next(new ErrorHandler("User already exists", 400));
     }
@@ -68,7 +67,6 @@ const createActivationToken = (user) => {
     expiresIn: "5m",
   });
 };
-
 
 // activate user
 router.post(
@@ -159,5 +157,23 @@ router.get(
   })
 );
 
+// log out user
+router.get(
+  "/logout",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+      });
+      res.status(201).json({
+        success: true,
+        message: "Log out successful!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 export default router;
