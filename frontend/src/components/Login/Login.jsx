@@ -26,12 +26,10 @@ const Login = () => {
       )
       .then((res) => {
         toast.success("Login Success!");
-        console.log(res);
         navigate("/");
-        // window.location.reload(true);
+        window.location.reload(true);
       })
       .catch((err) => {
-        console.log(err)
         toast.error(err.response.data.message);
       });
   };

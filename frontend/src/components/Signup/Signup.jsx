@@ -21,16 +21,15 @@ const Singup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+
     const newForm = new FormData();
+
     newForm.append("file", avatar);
     newForm.append("name", name);
     newForm.append("email", email);
     newForm.append("password", password);
+
     axios
       .post(`${server}/user/create-user`, newForm, config)
       .then((res) => {
@@ -40,9 +39,8 @@ const Singup = () => {
         setPassword("");
         setAvatar();
       })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.message);
+      .catch((error) => {
+        toast.error(error.response.data.message);
       });
   };
 
@@ -138,7 +136,7 @@ const Singup = () => {
                 <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
                   {avatar ? (
                     <img
-                      src={avatar}
+                      src={URL.createObjectURL(avatar)}
                       alt="avatar"
                       className="h-full w-full object-cover rounded-full"
                     />

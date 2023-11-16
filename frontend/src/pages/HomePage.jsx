@@ -17,8 +17,8 @@ const HomePage = () => {
       <BestDeals />
       <Events />
       <FeaturedProduct />
-      <Sponsored/>
-      <Footer/>
+      <Sponsored />
+      <Footer />
     </div>
   );
 };
