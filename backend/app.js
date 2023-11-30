@@ -4,9 +4,13 @@ import ErrorHandler from "./middleware/error.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
+import morgan from "morgan";
+import helmet from "helmet";
 
 const app = express();
 
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+app.use(morgan("common"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(

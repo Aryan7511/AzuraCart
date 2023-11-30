@@ -15,6 +15,7 @@ const Store = configureStore({
     cart: cartReducer,
     wishlist: wishlistReducer,
   },
+
 });
 
 export default Store;
