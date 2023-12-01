@@ -20,20 +20,28 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 router.post("/process", async (req, res, next) => {
   try {
+    const { name, shippingAddress } = req.body.shippingDetails;
     const myPayment = await stripe.paymentIntents.create({
-      amount: req.body.amount,
-      currency: "INR",
-      metadata: {
-        company: "MyShop",
+      amount: req.body.paymentData.amount,
+      currency: "USD",
+      description: "Products money earned",
+      shipping: {
+        name: name,
+        address: {
+          line1: shippingAddress.address1,
+          postal_code: shippingAddress.zipCode,
+          city: shippingAddress.city,
+          state: shippingAddress.city,
+          country: shippingAddress.country,
+        }
       },
     });
-    console.log(req.body.amount);
     res.status(200).json({
       success: true,
       client_secret: myPayment.client_secret,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(401).json({ error });
   }
 });
