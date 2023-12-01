@@ -13,16 +13,16 @@ import { Link } from "react-router-dom";
 import { MdTrackChanges } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import {
+  deleteUserAddress,
   loadUser,
-  updateUserInformation,
   updatUserAddress,
-  deleteUserAddress
+  updateUserInformation,
 } from "../../redux/actions/user";
 import { Country, State } from "country-state-city";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-// import { getAllOrdersOfUser } from "../../redux/actions/order";
+import { getAllOrdersOfUser } from "../../redux/actions/order";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -65,8 +65,8 @@ const ProfileContent = ({ active }) => {
         withCredentials: true,
       })
       .then((response) => {
-        dispatch(loadUser());
-        toast.success("avatar updated successfully!");
+         dispatch(loadUser());
+         toast.success("avatar updated successfully!");
       })
       .catch((error) => {
         toast.error(error);
@@ -101,7 +101,7 @@ const ProfileContent = ({ active }) => {
           <br />
           <br />
           <div className="w-full px-5">
-            <form onSubmit={handleSubmit} aria-required={true}>
+            <form onSubmit={handleSubmit}>
               <div className="w-full 800px:flex block pb-3">
                 <div className=" w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Full Name</label>
@@ -203,7 +203,7 @@ const AllOrders = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(getAllOrdersOfUser(user._id));
+    dispatch(getAllOrdersOfUser(user._id));
   }, []);
 
   const columns = [
@@ -288,11 +288,10 @@ const AllRefundOrders = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(getAllOrdersOfUser(user._id));
+    dispatch(getAllOrdersOfUser(user._id));
   }, []);
 
-  const eligibleOrders =
-    orders && orders.filter((item) => item.status === "Processing refund");
+  const eligibleOrders = orders && orders.filter((item) => item.status === "Processing refund");
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -348,7 +347,7 @@ const AllRefundOrders = () => {
   const row = [];
 
   eligibleOrders &&
-    eligibleOrders.forEach((item) => {
+   eligibleOrders.forEach((item) => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
@@ -376,7 +375,7 @@ const TrackOrder = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(getAllOrdersOfUser(user._id));
+    dispatch(getAllOrdersOfUser(user._id));
   }, []);
 
   const columns = [
@@ -470,7 +469,7 @@ const ChangePassword = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success(res.data.message);
+        toast.success(res.data.success);
         setOldPassword("");
         setNewPassword("");
         setConfirmPassword("");
@@ -601,7 +600,7 @@ const Address = () => {
               Add New Address
             </h1>
             <div className="w-full">
-              <form aria-required onSubmit={handleSubmit} className="w-full">
+              <form onSubmit={handleSubmit} className="w-full">
                 <div className="w-full block p-4">
                   <div className="w-full pb-2">
                     <label className="block pb-2">Country</label>
@@ -668,6 +667,7 @@ const Address = () => {
                     <input
                       type="address"
                       className={`${styles.input}`}
+                      required
                       value={address2}
                       onChange={(e) => setAddress2(e.target.value)}
                     />

@@ -73,40 +73,40 @@ const ProductDetails = ({ data }) => {
     }
   };
 
-  const totalReviewsLength =0
-    // products &&
-    // products.reduce((acc, product) => acc + product.reviews.length, 0);
+  const totalReviewsLength =
+    products &&
+    products.reduce((acc, product) => acc + product.reviews.length, 0);
 
-  const totalRatings =0
-    // products &&
-    // products.reduce(
-    //   (acc, product) =>
-    //     acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
-    //   0
-    // );
+  const totalRatings =
+    products &&
+    products.reduce(
+      (acc, product) =>
+        acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
+      0
+    );
 
   const averageRating = totalRatings / totalReviewsLength || 0;
 
   const handleMessageSubmit = async () => {
-    // if (isAuthenticated) {
-    //   const groupTitle = data._id + user._id;
-    //   const userId = user._id;
-    //   const sellerId = data.shop._id;
-    //   await axios
-    //     .post(`${server}/conversation/create-new-conversation`, {
-    //       groupTitle,
-    //       userId,
-    //       sellerId,
-    //     })
-    //     .then((res) => {
-    //       navigate(`/inbox?${res.data.conversation._id}`);
-    //     })
-    //     .catch((error) => {
-    //       toast.error(error.response.data.message);
-    //     });
-    // } else {
-    //   toast.error("Please login to create a conversation");
-    // }
+    if (isAuthenticated) {
+      const groupTitle = data._id + user._id;
+      const userId = user._id;
+      const sellerId = data.shop._id;
+      await axios
+        .post(`${server}/conversation/create-new-conversation`, {
+          groupTitle,
+          userId,
+          sellerId,
+        })
+        .then((res) => {
+          navigate(`/inbox?${res.data.conversation._id}`);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    } else {
+      toast.error("Please login to create a conversation");
+    }
   };
 
   return (
