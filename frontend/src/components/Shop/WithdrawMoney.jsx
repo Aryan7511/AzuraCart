@@ -11,15 +11,18 @@ const WithdrawMoney = () => {
 
   useEffect(() => {
     dispatch(getAllOrdersOfShop(seller._id));
+  }, []);
 
+  useEffect(() => {
     const orderData =
       orders && orders.filter((item) => item.status === "Delivered");
     setDeliveredOrder(orderData);
-  }, [dispatch]);
+  }, [orders]);
 
-  const totalEarningWithoutTax =
-    deliveredOrder &&
-    deliveredOrder.reduce((acc, item) => acc + item.totalPrice, 0);
+  // Perform calculations only if deliveredOrder has valid data
+  const totalEarningWithoutTax = deliveredOrder
+    ? deliveredOrder.reduce((acc, item) => acc + item.totalPrice, 0)
+    : 0;
 
   const serviceCharge = totalEarningWithoutTax * 0.1;
   const availableBalance = (totalEarningWithoutTax - serviceCharge).toFixed(2);

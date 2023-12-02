@@ -14,16 +14,17 @@ const DashboardHero = () => {
   const { orders } = useSelector((state) => state.order);
   const { seller } = useSelector((state) => state.seller);
   const { products } = useSelector((state) => state.products);
-  const [deliveredOrder, setDeliveredOrder] = useState(orders && orders);
+  const [deliveredOrder, setDeliveredOrder] = useState([]);
 
   useEffect(() => {
     dispatch(getAllOrdersOfShop(seller._id));
     dispatch(getAllProductsShop(seller._id));
+  }, []);
 
-    const orderData =
-      orders && orders.filter((item) => item.status === "Delivered");
+  useEffect(() => {
+    const orderData = orders?.filter((item) => item.status === "Delivered");
     setDeliveredOrder(orderData);
-  }, [dispatch]);
+  }, [orders]);
 
   const totalEarningWithoutTax = deliveredOrder
     ? deliveredOrder.reduce((acc, item) => acc + item.totalPrice, 0)
@@ -34,6 +35,8 @@ const DashboardHero = () => {
     : 0;
   const availableBalance =
     (totalEarningWithoutTax - serviceCharge).toFixed(2) || 0;
+
+    console.log(availableBalance);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
