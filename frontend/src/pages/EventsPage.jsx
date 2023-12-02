@@ -13,7 +13,7 @@ const EventsPage = () => {
       ) : (
         <div>
           <Header activeHeading={4} />
-          <div className="w-full grid">
+          <div className="w-full  grid  mt-4">
             {allEvents.length !== 0 && (
               <EventCard data={allEvents && allEvents[0]} />
             )}

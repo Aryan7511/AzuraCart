@@ -13,6 +13,7 @@ const ProductDetailsPage = () => {
   const [data, setData] = useState(null);
   const [searchParams] = useSearchParams();
   const eventData = searchParams.get("isEvent");
+  const isEvent = eventData!==null ? true : false;
 
   useEffect(() => {
     if (eventData !== null) {
@@ -27,7 +28,7 @@ const ProductDetailsPage = () => {
   return (
     <div>
       <Header />
-      <ProductDetails data={data} />
+      <ProductDetails isEvent={isEvent} data={data} />
       {!eventData && <>{data && <SuggestedProduct data={data} />}</>}
       <Footer />
     </div>

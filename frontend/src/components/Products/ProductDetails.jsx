@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 import Ratings from "./Ratings";
 import axios from "axios";
 
-const ProductDetails = ({ data }) => {
+const ProductDetails = ({ data, isEvent }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const { user, isAuthenticated } = useSelector((state) => state.user);
@@ -115,16 +115,17 @@ const ProductDetails = ({ data }) => {
         <div className={`${styles.section} w-[90%] 800px:w-[80%]`}>
           <div className="w-full py-5">
             <div className="block w-full 800px:flex">
-              <div className="w-full 800px:w-[50%]">
+              <div className="w-full 800px:w-[50%] ">
                 <img
                   src={`${backend_url}${data && data.images[select]}`}
                   alt=""
-                  className="w-[80%]"
+                  className="w-[250px] 400px:h-[250px] object-contain mx-auto"
                 />
-                <div className="w-full flex">
+                <div className="w-full flex justify-center items-center">
                   {data &&
                     data.images.map((i, index) => (
-                      <div key={i}
+                      <div
+                        key={i}
                         className={`${
                           select === 0 ? "border" : "null"
                         } cursor-pointer`}
@@ -132,7 +133,7 @@ const ProductDetails = ({ data }) => {
                         <img
                           src={`${backend_url}${i}`}
                           alt=""
-                          className="h-[200px] overflow-hidden mr-3 mt-3"
+                          className="h-[50px] 400px:h-[120px] w-[120px] object-contain overflow-hidden mr-3 mt-3"
                           onClick={() => setSelect(index)}
                         />
                       </div>
@@ -237,6 +238,7 @@ const ProductDetails = ({ data }) => {
             products={products}
             totalReviewsLength={totalReviewsLength}
             averageRating={averageRating}
+            isEvent={isEvent}
           />
           <br />
           <br />
@@ -251,6 +253,7 @@ const ProductDetailsInfo = ({
   products,
   totalReviewsLength,
   averageRating,
+  isEvent,
 }) => {
   const [active, setActive] = useState(1);
 
@@ -270,19 +273,21 @@ const ProductDetailsInfo = ({
             <div className={`${styles.active_indicator}`} />
           ) : null}
         </div>
-        <div className="relative">
-          <h5
-            className={
-              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-            }
-            onClick={() => setActive(2)}
-          >
-            Product Reviews
-          </h5>
-          {active === 2 ? (
-            <div className={`${styles.active_indicator}`} />
-          ) : null}
-        </div>
+        {!isEvent && (
+          <div className="relative">
+            <h5
+              className={
+                "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+              }
+              onClick={() => setActive(2)}
+            >
+              Product Reviews
+            </h5>
+            {active === 2 ? (
+              <div className={`${styles.active_indicator}`} />
+            ) : null}
+          </div>
+        )}
         <div className="relative">
           <h5
             className={
@@ -371,7 +376,7 @@ const ProductDetailsInfo = ({
                 Total Reviews:{" "}
                 <span className="font-[500]">{totalReviewsLength}</span>
               </h5>
-              <Link to="/">
+              <Link to={`/shop/preview/${data.shop?._id}`}>
                 <div
                   className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}
                 >
