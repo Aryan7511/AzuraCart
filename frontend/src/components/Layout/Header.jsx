@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
-import { categoriesData, productData } from "../../static/data";
+import { categoriesData } from "../../static/data";
 import {
   AiOutlineHeart,
   AiOutlineSearch,
@@ -20,7 +20,7 @@ import { RxCross1 } from "react-icons/rx";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
-  const { isSeller } = useSelector((state) => state.seller);
+  const { isSeller, seller } = useSelector((state) => state.seller);
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const { allProducts } = useSelector((state) => state.products);
@@ -33,15 +33,20 @@ const Header = ({ activeHeading }) => {
   const [open, setOpen] = useState(false);
 
   const handleSearchChange = (e) => {
-    const term = e.target.value;
+    const term = e.target.value; 
     setSearchTerm(term);
-
-    const filteredProducts =
-      allProducts &&
-      allProducts.filter((product) =>
-        product.name.toLowerCase().includes(term.toLowerCase())
-      );
-    setSearchData(filteredProducts);
+  
+    if (term.trim() === '') { // Check if the search term is an empty string or conatin only white spaces
+      setSearchData([]); // Set searchData to an empty array when the search term is empty
+    } else {
+      const filteredProducts =
+        allProducts &&
+        allProducts.filter((product) =>
+          product.name.toLowerCase().includes(term.trim().toLowerCase()) 
+          //trim used to remove the spaces from starting and end of the string
+        );
+      setSearchData(filteredProducts);
+    }
   };
 
   window.addEventListener("scroll", () => {
@@ -78,12 +83,12 @@ const Header = ({ activeHeading }) => {
               className="absolute right-2 top-1.5 cursor-pointer"
             />
             {searchData && searchData.length !== 0 ? (
-              <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
+              <div className="w-full absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
                 {searchData &&
                   searchData.map((i, index) => {
                     return (
-                      <Link to={`/product/${i._id}`}>
-                        <div className="w-full flex items-start-py-3">
+                      <Link to={`/product/${i._id}`} key={index}>
+                        <div className=" flex items-start-py-3">
                           <img
                             src={`${backend_url}${i.images[0]}`}
                             alt=""
@@ -176,7 +181,15 @@ const Header = ({ activeHeading }) => {
                 {isAuthenticated ? (
                   <Link to="/profile">
                     <img
-                      src={`${backend_url}${user.avatar}`}
+                      src={`${backend_url}${user?.avatar}`}
+                      className="w-[35px] h-[35px] rounded-full"
+                      alt=""
+                    />
+                  </Link>
+                ) : isSeller ? (
+                  <Link to={`/shop/${seller?._id}`}>
+                    <img
+                      src={`${backend_url}${seller?.avatar}`}
                       className="w-[35px] h-[35px] rounded-full"
                       alt=""
                     />
@@ -264,34 +277,33 @@ const Header = ({ activeHeading }) => {
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
-                {searchData && (
+                {searchData && searchData.length !== 0 ? (
                   <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
-                    {searchData.map((i) => {
-                      const d = i.name;
-
-                      const Product_name = d.replace(/\s+/g, "-");
+                    {searchData &&
+                  searchData.map((i, index) => {
                       return (
-                        <Link to={`/product/${Product_name}`}>
+                        <Link to={`/product/${i._id}`} key={index}>
                           <div className="flex items-center">
-                            <img
-                              src={i.image_Url[0].url}
-                              alt=""
-                              className="w-[50px] mr-2"
-                            />
+                          <img
+                            src={`${backend_url}${i.images[0]}`}
+                            alt=""
+                            className="w-[40px] h-[40px] mr-[10px]"
+                          />
                             <h5>{i.name}</h5>
                           </div>
                         </Link>
                       );
                     })}
                   </div>
-                )}
+                ) : null}
               </div>
 
               <Navbar active={activeHeading} />
               <div className={`${styles.button} ml-4 !rounded-[4px]`}>
-                <Link to="/shop-create">
+                <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
                   <h1 className="text-[#fff] flex items-center">
-                    Become Seller <IoIosArrowForward className="ml-1" />
+                    {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
+                    <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>
               </div>
@@ -310,6 +322,14 @@ const Header = ({ activeHeading }) => {
                       />
                     </Link>
                   </div>
+                ) : isSeller ? (
+                  <Link to={`/shop/${seller?._id}`}>
+                    <img
+                      src={`${backend_url}${seller?.avatar}`}
+                      className="w-[60px] h-[60px] rounded-full border-[3px] border-[#0eae88]"
+                      alt=""
+                    />
+                  </Link>
                 ) : (
                   <>
                     <Link

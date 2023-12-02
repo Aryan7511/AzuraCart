@@ -124,7 +124,7 @@ const ProductDetails = ({ data }) => {
                 <div className="w-full flex">
                   {data &&
                     data.images.map((i, index) => (
-                      <div
+                      <div key={i}
                         className={`${
                           select === 0 ? "border" : "null"
                         } cursor-pointer`}
@@ -309,7 +309,7 @@ const ProductDetailsInfo = ({
         <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
           {data &&
             data.reviews.map((item, index) => (
-              <div className="w-full flex my-2">
+              <div key={item?._id} className="w-full flex my-2">
                 <img
                   src={`${backend_url}/${item.user.avatar}`}
                   alt=""
