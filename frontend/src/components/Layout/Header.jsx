@@ -34,16 +34,18 @@ const Header = ({ activeHeading }) => {
   const [open, setOpen] = useState(false);
 
   const handleSearchChange = (e) => {
-    const term = e.target.value; 
+    const term = e.target.value;
     setSearchTerm(term);
-  
-    if (term.trim() === '') { // Check if the search term is an empty string or conatin only white spaces
+
+    if (term.trim() === "") {
+      // Check if the search term is an empty string or conatin only white spaces
       setSearchData([]); // Set searchData to an empty array when the search term is empty
     } else {
       const filteredProducts =
         allProducts &&
-        allProducts.filter((product) =>
-          product.name.toLowerCase().includes(term.trim().toLowerCase()) 
+        allProducts.filter(
+          (product) =>
+            product.name.toLowerCase().includes(term.trim().toLowerCase())
           //trim used to remove the spaces from starting and end of the string
         );
       setSearchData(filteredProducts);
@@ -64,11 +66,7 @@ const Header = ({ activeHeading }) => {
         <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
           <div>
             <Link to="/">
-              <img
-                src={Logo}
-                alt="Logo"
-                className="h-[50px] w-[100px] "
-              />
+              <img src={Logo} alt="Logo" className="h-[50px] w-[100px] " />
             </Link>
           </div>
           {/* search box */}
@@ -232,11 +230,7 @@ const Header = ({ activeHeading }) => {
           </div>
           <div>
             <Link to="/">
-            <img
-                src={Logo}
-                alt="Logo"
-                className="h-[50px] w-[100px]"
-              />
+              <img src={Logo} alt="Logo" className="h-[50px] w-[100px]" />
             </Link>
           </div>
           <div>
@@ -282,20 +276,20 @@ const Header = ({ activeHeading }) => {
                 {searchData && searchData.length !== 0 ? (
                   <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
                     {searchData &&
-                  searchData.map((i, index) => {
-                      return (
-                        <Link to={`/product/${i._id}`} key={index}>
-                          <div className="flex items-center">
-                          <img
-                            src={`${backend_url}${i.images[0]}`}
-                            alt=""
-                            className="w-[40px] h-[40px] mr-[10px]"
-                          />
-                            <h5>{i.name}</h5>
-                          </div>
-                        </Link>
-                      );
-                    })}
+                      searchData.map((i, index) => {
+                        return (
+                          <Link to={`/product/${i._id}`} key={index}>
+                            <div className="flex items-center">
+                              <img
+                                src={`${backend_url}${i.images[0]}`}
+                                alt=""
+                                className="w-[40px] h-[40px] mr-[10px]"
+                              />
+                              <h5>{i.name}</h5>
+                            </div>
+                          </Link>
+                        );
+                      })}
                   </div>
                 ) : null}
               </div>

@@ -40,7 +40,7 @@ const ShopCreate = () => {
         setAvatar();
         setZipCode();
         setAddress("");
-        setPhoneNumber();
+        setPhoneNumber(null);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
