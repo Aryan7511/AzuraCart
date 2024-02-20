@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   AiFillHeart,
   AiOutlineHeart,
   AiOutlineMessage,
-  AiOutlineShoppingCart
-} from 'react-icons/ai';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { getAllProductsShop } from '../../redux/actions/product';
-import { backend_url, server } from '../../server';
-import styles from '../../styles/styles';
+  AiOutlineShoppingCart,
+} from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { getAllProductsShop } from "../../redux/actions/product";
+import { backend_url, server } from "../../server";
+import styles from "../../styles/styles";
 import {
   addToWishlist,
-  removeFromWishlist
-} from '../../redux/actions/wishlist';
-import { addTocart } from '../../redux/actions/cart';
-import { toast } from 'react-toastify';
-import Ratings from './Ratings';
-import axios from 'axios';
+  removeFromWishlist,
+} from "../../redux/actions/wishlist";
+import { addTocart } from "../../redux/actions/cart";
+import { toast } from "react-toastify";
+import Ratings from "./Ratings";
+import axios from "axios";
 
 const ProductDetails = ({ data, isEvent }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -61,14 +61,14 @@ const ProductDetails = ({ data, isEvent }) => {
   const addToCartHandler = (id) => {
     const isItemExists = cart && cart.find((i) => i._id === id);
     if (isItemExists) {
-      toast.error('Item already in cart!');
+      toast.error("Item already in cart!");
     } else {
       if (data.stock < 1) {
-        toast.error('Product stock limited!');
+        toast.error("Product stock limited!");
       } else {
         const cartData = { ...data, qty: count };
         dispatch(addTocart(cartData));
-        toast.success('Item added to cart successfully!');
+        toast.success("Item added to cart successfully!");
       }
     }
   };
@@ -96,7 +96,7 @@ const ProductDetails = ({ data, isEvent }) => {
         .post(`${server}/conversation/create-new-conversation`, {
           groupTitle,
           userId,
-          sellerId
+          sellerId,
         })
         .then((res) => {
           navigate(`/inbox?${res.data.conversation._id}`);
@@ -105,7 +105,7 @@ const ProductDetails = ({ data, isEvent }) => {
           toast.error(error.response.data.message);
         });
     } else {
-      toast.error('Please login to create a conversation');
+      toast.error("Please login to create a conversation");
     }
   };
 
@@ -127,7 +127,7 @@ const ProductDetails = ({ data, isEvent }) => {
                       <div
                         key={i}
                         className={`${
-                          select === 0 ? 'border' : 'null'
+                          select === 0 ? "border" : "null"
                         } cursor-pointer`}
                       >
                         <img
@@ -140,7 +140,7 @@ const ProductDetails = ({ data, isEvent }) => {
                     ))}
                   <div
                     className={`${
-                      select === 1 ? 'border' : 'null'
+                      select === 1 ? "border" : "null"
                     } cursor-pointer`}
                   ></div>
                 </div>
@@ -153,7 +153,7 @@ const ProductDetails = ({ data, isEvent }) => {
                     {data.discountPrice}$
                   </h4>
                   <h3 className={`${styles.price}`}>
-                    {data.originalPrice ? data.originalPrice + '$' : null}
+                    {data.originalPrice ? data.originalPrice + "$" : null}
                   </h3>
                 </div>
 
@@ -181,7 +181,7 @@ const ProductDetails = ({ data, isEvent }) => {
                         size={30}
                         className="cursor-pointer"
                         onClick={() => removeFromWishlistHandler(data)}
-                        color={click ? 'red' : '#333'}
+                        color={click ? "red" : "#333"}
                         title="Remove from wishlist"
                       />
                     ) : (
@@ -189,7 +189,7 @@ const ProductDetails = ({ data, isEvent }) => {
                         size={30}
                         className="cursor-pointer"
                         onClick={() => addToWishlistHandler(data)}
-                        color={click ? 'red' : '#333'}
+                        color={click ? "red" : "#333"}
                         title="Add to wishlist"
                       />
                     )}
@@ -253,7 +253,7 @@ const ProductDetailsInfo = ({
   products,
   totalReviewsLength,
   averageRating,
-  isEvent
+  isEvent,
 }) => {
   const [active, setActive] = useState(1);
 
@@ -263,7 +263,7 @@ const ProductDetailsInfo = ({
         <div className="relative">
           <h5
             className={
-              'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]'
+              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
             }
             onClick={() => setActive(1)}
           >
@@ -277,7 +277,7 @@ const ProductDetailsInfo = ({
           <div className="relative">
             <h5
               className={
-                'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]'
+                "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
               }
               onClick={() => setActive(2)}
             >
@@ -291,7 +291,7 @@ const ProductDetailsInfo = ({
         <div className="relative">
           <h5
             className={
-              'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]'
+              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
             }
             onClick={() => setActive(3)}
           >
@@ -361,19 +361,19 @@ const ProductDetailsInfo = ({
           <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
             <div className="text-left">
               <h5 className="font-[600]">
-                Joined on:{' '}
+                Joined on:{" "}
                 <span className="font-[500]">
                   {data.shop?.createdAt?.slice(0, 10)}
                 </span>
               </h5>
               <h5 className="font-[600] pt-3">
-                Total Products:{' '}
+                Total Products:{" "}
                 <span className="font-[500]">
                   {products && products.length}
                 </span>
               </h5>
               <h5 className="font-[600] pt-3">
-                Total Reviews:{' '}
+                Total Reviews:{" "}
                 <span className="font-[500]">{totalReviewsLength}</span>
               </h5>
               <Link to={`/shop/preview/${data.shop?._id}`}>

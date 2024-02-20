@@ -41,8 +41,6 @@ import event from './controller/event.js';
 import coupon from './controller/coupounCode.js';
 import payment from './controller/payment.js';
 import order from './controller/order.js';
-import conversation from './controller/conversation.js';
-import message from './controller/message.js';
 
 app.use('/api/v2/user', user);
 app.use('/api/v2/shop', shop);
@@ -51,8 +49,6 @@ app.use('/api/v2/event', event);
 app.use('/api/v2/coupon', coupon);
 app.use('/api/v2/payment', payment);
 app.use('/api/v2/order', order);
-app.use('/api/v2/conversation', conversation);
-app.use('/api/v2/message', message);
 
 // it's for ErrorHandling
 app.use(ErrorHandler);

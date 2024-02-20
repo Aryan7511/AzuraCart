@@ -19,8 +19,7 @@ import {
   SellerActivationPage,
   ShopLoginPage,
   OrderDetailsPage,
-  TrackOrderPage,
-  UserInbox
+  TrackOrderPage
 } from './routes/Routes.js';
 import {
   ShopDashboardPage,
@@ -35,15 +34,17 @@ import {
   ShopAllRefunds,
   ShopSettingsPage,
   ShopWithDrawMoneyPage,
-  ShopInboxPage
 } from './routes/ShopRoutes';
+
+import { AdminDashboardPage } from './routes/AdminRoutes.js';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Store from './redux/store';
 import { loadSeller, loadUser } from './redux/actions/user';
-import ProtectedRoute from './routes/ProtectedRoute';
 import { ShopHomePage } from './ShopRoutes.js';
+import ProtectedRoute from './routes/ProtectedRoute';
 import SellerProtectedRoute from './routes/SellerProtectedRoute';
+import ProtectedAdminRoute from './routes/ProtectedAdminRoute.js';
 import { getAllProducts } from './redux/actions/product';
 import { getAllEvents } from './redux/actions/event';
 import axios from 'axios';
@@ -233,22 +234,16 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+        {/* Admin Routes */}
         <Route
-          path="/dashboard-messages"
+          path="/admin/dashboard"
           element={
-            <SellerProtectedRoute>
-              <ShopInboxPage />
-            </SellerProtectedRoute>
+            <ProtectedAdminRoute>
+              <AdminDashboardPage />
+            </ProtectedAdminRoute>
           }
         />
-        <Route
-          path="/inbox"
-          element={
-            <ProtectedRoute>
-              <UserInbox />
-            </ProtectedRoute>
-          }
-        />
+ 
       </Routes>
       <ToastContainer
         position="top-right"
