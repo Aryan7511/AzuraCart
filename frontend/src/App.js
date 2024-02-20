@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import './App.css';
+import { Route, Routes } from 'react-router-dom';
 import {
   LoginPage,
   SignupPage,
@@ -20,7 +20,8 @@ import {
   ShopLoginPage,
   OrderDetailsPage,
   TrackOrderPage,
-} from "./routes/Routes.js";
+  UserInbox
+} from './routes/Routes.js';
 import {
   ShopDashboardPage,
   ShopCreateProduct,
@@ -34,23 +35,24 @@ import {
   ShopAllRefunds,
   ShopSettingsPage,
   ShopWithDrawMoneyPage,
-} from "./routes/ShopRoutes";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Store from "./redux/store";
-import { loadSeller, loadUser } from "./redux/actions/user";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import { ShopHomePage } from "./ShopRoutes.js";
-import SellerProtectedRoute from "./routes/SellerProtectedRoute";
-import { getAllProducts } from "./redux/actions/product";
-import { getAllEvents } from "./redux/actions/event";
-import axios from "axios";
-import { server } from "./server.js";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+  ShopInboxPage
+} from './routes/ShopRoutes';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Store from './redux/store';
+import { loadSeller, loadUser } from './redux/actions/user';
+import ProtectedRoute from './routes/ProtectedRoute';
+import { ShopHomePage } from './ShopRoutes.js';
+import SellerProtectedRoute from './routes/SellerProtectedRoute';
+import { getAllProducts } from './redux/actions/product';
+import { getAllEvents } from './redux/actions/event';
+import axios from 'axios';
+import { server } from './server.js';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 const App = () => {
-  const [stripeApikey, setStripeApiKey] = useState("");
+  const [stripeApikey, setStripeApiKey] = useState('');
 
   async function getStripeApikey() {
     const { data } = await axios.get(`${server}/payment/stripeapikey`);
@@ -229,6 +231,22 @@ const App = () => {
             <SellerProtectedRoute>
               <ShopSettingsPage />
             </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-messages"
+          element={
+            <SellerProtectedRoute>
+              <ShopInboxPage />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/inbox"
+          element={
+            <ProtectedRoute>
+              <UserInbox />
+            </ProtectedRoute>
           }
         />
       </Routes>
