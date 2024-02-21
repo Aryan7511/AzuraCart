@@ -1,13 +1,15 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { backend_url, server } from "../../server";
-import styles from "../../styles/styles";
-import Loader from "../Layout/Loader";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllProductsShop } from "../../redux/actions/product";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { backend_url, server } from '../../server';
+import styles from '../../styles/styles';
+import Loader from '../Layout/Loader';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProductsShop } from '../../redux/actions/product';
 
 const ShopInfo = ({ isOwner }) => {
+  const navigate = useNavigate();
   const [data, setData] = useState({});
   const { products } = useSelector((state) => state.products);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,11 +31,17 @@ const ShopInfo = ({ isOwner }) => {
       });
   }, []);
 
-  const logoutHandler = async () => {
-    axios.get(`${server}/shop/logout`, {
-      withCredentials: true,
-    });
-    window.location.reload();
+  const logoutHandler = () => {
+    axios
+      .get(`${server}/shop/logout`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+        window.location.reload(true);
+        navigate('/shop-login');
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
   };
 
   const totalReviewsLength =

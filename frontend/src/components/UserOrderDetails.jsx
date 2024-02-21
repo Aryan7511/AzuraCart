@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { BsFillBagFill } from "react-icons/bs";
-import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import styles from "../styles/styles";
-import { getAllOrdersOfUser } from "../redux/actions/order";
-import { backend_url, server } from "../server";
-import { RxCross1 } from "react-icons/rx";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import axios from "axios";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from 'react';
+import { BsFillBagFill } from 'react-icons/bs';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from '../styles/styles';
+import { getAllOrdersOfUser } from '../redux/actions/order';
+import { backend_url, server } from '../server';
+import { RxCross1 } from 'react-icons/rx';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const UserOrderDetails = () => {
   const { orders } = useSelector((state) => state.order);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState(1);
 
@@ -36,14 +36,14 @@ const UserOrderDetails = () => {
           rating,
           comment,
           productId: selectedItem?._id,
-          orderId: id,
+          orderId: id
         },
         { withCredentials: true }
       )
       .then((res) => {
         toast.success(res.data.message);
         dispatch(getAllOrdersOfUser(user._id));
-        setComment("");
+        setComment('');
         setRating(null);
         setOpen(false);
       })
@@ -55,7 +55,7 @@ const UserOrderDetails = () => {
   const refundHandler = async () => {
     await axios
       .put(`${server}/order/order-refund/${id}`, {
-        status: "Processing refund",
+        status: 'Processing refund'
       })
       .then((res) => {
         toast.success(res.data.message);
@@ -77,7 +77,7 @@ const UserOrderDetails = () => {
 
       <div className="w-full flex items-center justify-between pt-6">
         <h5 className="text-[#00000084]">
-          Order ID: <span>#{data?._id}</span>
+          Order ID: <span>#{data?._id?.slice(0, 8)}</span>
         </h5>
         <h5 className="text-[#00000084]">
           Placed on: <span>{data?.createdAt?.slice(0, 10)}</span>
@@ -88,29 +88,31 @@ const UserOrderDetails = () => {
       <br />
       <br />
       {data &&
-        data?.cart.map((item, index) => (
-          <div key={item._id} className="w-full flex items-start mb-5">
-            <img
-              src={`${backend_url}/${item.images[0]}`}
-              alt=""
-              className="w-[80x] h-[80px]"
-            />
-            <div className="w-full">
-              <h5 className="pl-3 text-[20px]">{item.name}</h5>
-              <h5 className="pl-3 text-[20px] text-[#00000091]">
-                US${item.discountPrice} x {item.qty}
-              </h5>
-            </div>
-            {!item.isReviewed && data?.status === "Delivered" ? (
-              <div
-                className={`${styles.button} text-[#fff]`}
-                onClick={() => setOpen(true) || setSelectedItem(item)}
-              >
-                Write a review
+        data?.cart.map((item, index) => {
+          return (
+            <div className="w-full flex items-start mb-5">
+              <img
+                src={`${backend_url}/${item.images[0]}`}
+                alt=""
+                className="w-[80x] h-[80px]"
+              />
+              <div className="w-full">
+                <h5 className="pl-3 text-[20px]">{item.name}</h5>
+                <h5 className="pl-3 text-[20px] text-[#00000091]">
+                  US${item.discountPrice} x {item.qty}
+                </h5>
               </div>
-            ) : null}
-          </div>
-        ))}
+              {!item.isReviewed && data?.status === 'Delivered' ? (
+                <div
+                  className={`${styles.button} text-[#fff]`}
+                  onClick={() => setOpen(true) || setSelectedItem(item)}
+                >
+                  Write a review
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
 
       {/* review popup */}
       {open && (
@@ -210,7 +212,7 @@ const UserOrderDetails = () => {
           <h4 className="pt-3 text-[20px] font-[600]">Shipping Address:</h4>
           <h4 className="pt-3 text-[20px]">
             {data?.shippingAddress.address1 +
-              " " +
+              ' ' +
               data?.shippingAddress.address2}
           </h4>
           <h4 className=" text-[20px]">{data?.shippingAddress.country}</h4>
@@ -220,11 +222,11 @@ const UserOrderDetails = () => {
         <div className="w-full 800px:w-[40%]">
           <h4 className="pt-3 text-[20px]">Payment Info:</h4>
           <h4>
-            Status:{" "}
-            {data?.paymentInfo?.status ? data?.paymentInfo?.status : "Not Paid"}
+            Status:{' '}
+            {data?.paymentInfo?.status ? data?.paymentInfo?.status : 'Not Paid'}
           </h4>
           <br />
-          {data?.status === "Delivered" && (
+          {data?.status === 'Delivered' && (
             <div
               className={`${styles.button} text-white`}
               onClick={refundHandler}

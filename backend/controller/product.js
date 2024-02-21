@@ -3,7 +3,7 @@ import { upload } from "../multer.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import fs from "fs";
-import { isSeller, isAuthenticated } from "../middleware/auth.js";
+import { isSeller, isAuthenticated, isAdmin } from "../middleware/auth.js";
 import Shop from "../model/shop.js";
 import Product from "../model/product.js";
 import Order from "../model/order.js";
@@ -165,6 +165,26 @@ router.put(
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
+// all products --- for admin
+router.get(
+  "/admin-all-products",
+  isAuthenticated,
+  isAdmin("Admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const products = await Product.find().sort({
+        createdAt: -1,
+      });
+      res.status(201).json({
+        success: true,
+        products,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
     }
   })
 );

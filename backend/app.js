@@ -6,8 +6,13 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import path from 'path';
+import { fileURLToPath } from "url";
 
 const app = express();
+
+// Get the directory name using import.meta.url
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 app.use(morgan('common'));
@@ -19,7 +24,7 @@ app.use(
     credentials: true
   })
 );
-app.use('/', express.static('uploads'));
+app.use('/', express.static(path.join(__dirname, './uploads')));
 app.use('/test', (req, res) => {
   res.send('Hello world!');
 });
@@ -41,6 +46,7 @@ import event from './controller/event.js';
 import coupon from './controller/coupounCode.js';
 import payment from './controller/payment.js';
 import order from './controller/order.js';
+import withdraw from './controller/withdraw.js';
 
 app.use('/api/v2/user', user);
 app.use('/api/v2/shop', shop);
@@ -49,6 +55,7 @@ app.use('/api/v2/event', event);
 app.use('/api/v2/coupon', coupon);
 app.use('/api/v2/payment', payment);
 app.use('/api/v2/order', order);
+app.use('/api/v2/withdraw', withdraw);
 
 // it's for ErrorHandling
 app.use(ErrorHandler);

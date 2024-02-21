@@ -1,9 +1,10 @@
 import express from "express";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
-import { isAuthenticated, isSeller } from "../middleware/auth.js";
+import { isAdmin, isAuthenticated, isSeller } from "../middleware/auth.js";
 import Product from "../model/product.js";
 import Order from "../model/order.js";
+import Shop from "../model/shop.js";
 
 const router = express.Router();
 
@@ -116,9 +117,10 @@ router.put(
       if (req.body.status === "Delivered") {
         order.deliveredAt = Date.now();
         order.paymentInfo.status = "Succeeded";
+        const serviceCharge = order.totalPrice * .10;
+        await updateSellerInfo(order.totalPrice - serviceCharge);
       }
 
-     //validateBeforeSave: false is used to skip schema validation before saving
       await order.save({ validateBeforeSave: false });
 
       res.status(200).json({
@@ -133,6 +135,14 @@ router.put(
         product.sold_out += qty;
 
         await product.save({ validateBeforeSave: false });
+      }
+
+      async function updateSellerInfo(amount) {
+        const seller = await Shop.findById(req.seller.id);
+        
+        seller.availableBalance = amount;
+
+        await seller.save();
       }
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -202,6 +212,27 @@ router.put(
         await product.save({ validateBeforeSave: false });
       };
 
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// all orders --- for admin
+router.get(
+  "/admin-all-orders",
+  isAuthenticated,
+  isAdmin("Admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const orders = await Order.find().sort({
+        deliveredAt: -1,
+        createdAt: -1,
+      });
+      res.status(201).json({
+        success: true,
+        orders,
+      });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }
