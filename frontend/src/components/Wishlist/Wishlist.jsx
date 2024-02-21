@@ -91,7 +91,7 @@ const CartSingle = ({ data, removeFromWishlistHandler, addToCartHandler }) => {
         <img
           src={`${backend_url}${data?.images[0]}`}
           alt=""
-          className="w-[130px] h-min ml-2 mr-2 rounded-[5px]"
+          className="w-[130px] h-[100px] object-contain ml-2 mr-2 rounded-[5px]"
         />
 
         <div className="pl-[5px]">

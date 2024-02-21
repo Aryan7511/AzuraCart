@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { server } from '../../server';
 import { toast } from 'react-toastify';
+import images from '../../Assests';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -69,13 +70,20 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Login to your account
-        </h2>
-      </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-white pb-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="flex items-center justify-center">
+            <Link to="/">
+              <img
+                className="h-[90px] w-[100px] scale-75"
+                src={images.Logo}
+                alt="Logo"
+              />
+            </Link>
+          </div>
+          <h2 className="mb-8 text-center text-3xl font-extrabold text-gray-900">
+            Login to your account
+          </h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
@@ -161,7 +169,7 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black"
               >
                 Submit
               </button>

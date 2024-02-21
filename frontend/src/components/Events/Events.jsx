@@ -18,7 +18,9 @@ const Events = () => {
             {allEvents.length !== 0 && (
               <EventCard data={allEvents && allEvents[0]} />
             )}
-            <h4>{allEvents?.length === 0 && 'No Events have!'}</h4>
+            <h4 className="mb-4">
+              {allEvents?.length === 0 && 'No Active Events!'}
+            </h4>
           </div>
         </div>
       )}

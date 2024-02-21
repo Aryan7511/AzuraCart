@@ -67,7 +67,7 @@ const Header = ({ activeHeading }) => {
           <div>
             <Link to="/">
               <img
-                className="h-[100px] w-[120px] scale-75 "
+                className="h-[100px] w-[115px] scale-75 "
                 src={images.Logo}
                 alt="Logo"
               />
