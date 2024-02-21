@@ -17,6 +17,7 @@ import { backend_url } from '../../server';
 import Cart from '../cart/Cart';
 import Wishlist from '../Wishlist/Wishlist';
 import { RxCross1 } from 'react-icons/rx';
+import images from '../../Assests/index';
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -66,8 +67,9 @@ const Header = ({ activeHeading }) => {
           <div>
             <Link to="/">
               <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                alt=""
+                className="h-[100px] w-[120px] scale-75 "
+                src={images.Logo}
+                alt="Logo"
               />
             </Link>
           </div>
@@ -78,7 +80,7 @@ const Header = ({ activeHeading }) => {
               placeholder="Search Product..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
+              className="h-[40px] w-full px-2 border-[#2D6F6D] border-[2px] rounded-md"
             />
             <AiOutlineSearch
               size={30}
@@ -118,7 +120,7 @@ const Header = ({ activeHeading }) => {
       <div
         className={`${
           active === true ? 'shadow-sm fixed top-0 left-0 z-10' : null
-        } transition hidden 800px:flex items-center justify-between w-full bg-[#3321c8] h-[70px]`}
+        } transition hidden 800px:flex items-center justify-between w-full bg-[#2D6F6D] h-[70px]`}
       >
         <div
           className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
@@ -233,9 +235,9 @@ const Header = ({ activeHeading }) => {
           <div>
             <Link to="/">
               <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                alt=""
-                className="mt-3 cursor-pointer"
+                className="h-[70px] w-[80px] scale-75 "
+                src={images.Logo}
+                alt="Logo"
               />
             </Link>
           </div>
@@ -286,7 +288,7 @@ const Header = ({ activeHeading }) => {
                 <input
                   type="search"
                   placeholder="Search Product..."
-                  className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
+                  className="h-[40px] w-full px-2 border-[#2D6F6D] border-[2px] rounded-md"
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />

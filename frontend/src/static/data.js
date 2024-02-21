@@ -229,13 +229,13 @@ export const categoriesData = [
     title: "Gifts",
     subTitle: "",
     image_Url:
-      "https://indian-retailer.s3.ap-south-1.amazonaws.com/s3fs-public/2021-07/kosme1.png",
+      "https://img.freepik.com/premium-photo/pile-colorful-gifts-boxes-isolated-white_392895-38200.jpg",
   },
   {
     id: 7,
     title: "Pet Care",
     subTitle: "",
-    image_Url: "https://cdn.openpr.com/T/c/Tc15444071_g.jpg",
+    image_Url: "https://www.shopickr.com/wp-content/uploads/2019/07/icon_cat_5_v_3_500_1553422303-500x250.jpg",
   },
   {
     id: 8,
