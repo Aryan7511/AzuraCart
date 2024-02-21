@@ -1,47 +1,95 @@
-import { React, useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import styles from "../../styles/styles";
-import { Link } from "react-router-dom";
-import { RxAvatar } from "react-icons/rx";
-import axios from "axios";
-import { server } from "../../server";
-import { toast } from "react-toastify";
+import { React, useState } from 'react';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import styles from '../../styles/styles';
+import { Link } from 'react-router-dom';
+import { RxAvatar } from 'react-icons/rx';
+import axios from 'axios';
+import { server } from '../../server';
+import { toast } from 'react-toastify';
 
 const Singup = () => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!name.trim()) {
+      newErrors.name = 'Name is required';
+    } else if (/\d/.test(name)) {
+      newErrors.name = 'Name should not contain numbers';
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'Enter a valid email address';
+    }
+
+    if (!password.trim()) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 8) {
+      newErrors.password = 'Password should be at least 8 characters long';
+    }
+
+    setErrors((prevErrors) => ({ ...prevErrors, ...newErrors }));
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     setAvatar(file);
   };
 
+  const handleChangeName = (e) => {
+    setName(e.target.value);
+    // Clear the error for name when user starts typing
+    setErrors((prevErrors) => ({ ...prevErrors, name: undefined }));
+  };
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+    // Clear the error for email when user starts typing
+    setErrors((prevErrors) => ({ ...prevErrors, email: undefined }));
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+    // Clear the error for password when user starts typing
+    setErrors((prevErrors) => ({ ...prevErrors, password: undefined }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-    const newForm = new FormData();
+    if (validateForm()) {
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+      const newForm = new FormData();
 
-    newForm.append("file", avatar);
-    newForm.append("name", name);
-    newForm.append("email", email);
-    newForm.append("password", password);
+      newForm.append('file', avatar);
+      newForm.append('name', name);
+      newForm.append('email', email);
+      newForm.append('password', password);
 
-    axios
-      .post(`${server}/user/create-user`, newForm, config)
-      .then((res) => {
-        toast.success(res.data.message);
-        setName("");
-        setEmail("");
-        setPassword("");
-        setAvatar();
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
+      axios
+        .post(`${server}/user/create-user`, newForm, config)
+        .then((res) => {
+          toast.success(res.data.message);
+          setName('');
+          setEmail('');
+          setPassword('');
+          setAvatar(null);
+          setErrors({});
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    }
   };
 
   return (
@@ -68,9 +116,12 @@ const Singup = () => {
                   autoComplete="name"
                   required
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={handleChangeName}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
+              </div>
+              <div className="text-red-500 text-sm mt-2">
+                {errors.name && errors.name}
               </div>
             </div>
 
@@ -88,9 +139,12 @@ const Singup = () => {
                   autoComplete="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChangeEmail}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
+              </div>
+              <div className="text-red-500 text-sm mt-2">
+                {errors.email && errors.email}
               </div>
             </div>
 
@@ -103,12 +157,12 @@ const Singup = () => {
               </label>
               <div className="mt-1 relative">
                 <input
-                  type={visible ? "text" : "password"}
+                  type={visible ? 'text' : 'password'}
                   name="password"
                   autoComplete="current-password"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleChangePassword}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
                 {visible ? (
@@ -124,6 +178,9 @@ const Singup = () => {
                     onClick={() => setVisible(true)}
                   />
                 )}
+              </div>
+              <div className="text-red-500 text-sm mt-2">
+                {errors.password && errors.password}
               </div>
             </div>
 

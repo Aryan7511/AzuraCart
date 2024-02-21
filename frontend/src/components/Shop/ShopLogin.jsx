@@ -1,37 +1,70 @@
-import { React, useEffect, useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import styles from "../../styles/styles";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { server } from "../../server";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import styles from '../../styles/styles';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { server } from '../../server';
+import { toast } from 'react-toastify';
 
 const ShopLogin = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'Enter a valid email address';
+    }
+
+    if (!password.trim()) {
+      newErrors.password = 'Password is required';
+    }
+
+    setErrors((prevErrors) => ({ ...prevErrors, ...newErrors }));
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios
-      .post(
-        `${server}/shop/login-shop`,
-        {
-          email,
-          password,
-        },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        toast.success("Login Success!");
-        navigate("/dashboard");
-        window.location.reload(true);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
+    if (validateForm()) {
+      await axios
+        .post(
+          `${server}/shop/login-shop`,
+          {
+            email,
+            password
+          },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          toast.success('Login Success!');
+          navigate('/dashboard');
+          window.location.reload(true);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    }
+  };
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+    // Clear the error for email when the user starts typing
+    setErrors((prevErrors) => ({ ...prevErrors, email: undefined }));
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+    // Clear the error for password when the user starts typing
+    setErrors((prevErrors) => ({ ...prevErrors, password: undefined }));
   };
 
   return (
@@ -58,9 +91,12 @@ const ShopLogin = () => {
                   autoComplete="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChangeEmail}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
+              </div>
+              <div className="text-red-500 text-sm mt-2">
+                {errors.email && errors.email}
               </div>
             </div>
             <div>
@@ -72,12 +108,12 @@ const ShopLogin = () => {
               </label>
               <div className="mt-1 relative">
                 <input
-                  type={visible ? "text" : "password"}
+                  type={visible ? 'text' : 'password'}
                   name="password"
                   autoComplete="current-password"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleChangePassword}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
                 {visible ? (
@@ -93,6 +129,9 @@ const ShopLogin = () => {
                     onClick={() => setVisible(true)}
                   />
                 )}
+              </div>
+              <div className="text-red-500 text-sm mt-2">
+                {errors.password && errors.password}
               </div>
             </div>
             <div className={`${styles.noramlFlex} justify-between`}>
@@ -111,12 +150,12 @@ const ShopLogin = () => {
                 </label>
               </div>
               <div className="text-sm">
-                <a
-                  href=".forgot-password"
+                <Link
+                  href="#"
                   className="font-medium text-blue-600 hover:text-blue-500"
                 >
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
             <div>
