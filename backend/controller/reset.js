@@ -3,7 +3,6 @@ import User from '../model/user.js';
 import sendMail from '../utils/sendMail.js';
 import Shop from '../model/shop.js';
 import ErrorHandler from '../utils/ErrorHandler.js';
-import bcrypt from 'bcryptjs';
 
 const router = express.Router();
 
@@ -48,7 +47,7 @@ router.post('/reset', async (req, res, next) => {
       await sendMail({
         email: person.email,
         subject: 'Reset Your Password',
-        message: `Hello ${firstName},\nPlease click on the link to reset your Password: ${ResetTokenUrl}\nThis link is valid for 5 minutes.`
+        message: `Hello ${firstName},\nPlease click on the link to reset your Password: ${ResetTokenUrl}\nThis link is valid for 5 minutes only.`
       });
       return res.status(201).json({
         success: true,
@@ -90,8 +89,7 @@ router.post('/change-password', async (req, res, next) => {
 
     person = user || seller;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    person.password = hashedPassword;
+    person.password = password;
     person.resetToken = undefined;
     person.resetTokenExpiration = undefined;
 
