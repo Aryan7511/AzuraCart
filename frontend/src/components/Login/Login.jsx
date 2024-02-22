@@ -6,6 +6,7 @@ import axios from 'axios';
 import { server } from '../../server';
 import { toast } from 'react-toastify';
 import images from '../../Assests';
+import { RxCross1 } from 'react-icons/rx';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
   const [errors, setErrors] = useState({});
+  const [open, setOpen] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -158,13 +160,16 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-sm">
-                <Link
-                  href="#"
-                  className="font-medium text-blue-600 hover:text-blue-500"
+                <div
+                  onClick={() => setOpen(!open)}
+                  className="cursor-pointer font-medium text-blue-600 hover:text-blue-500"
                 >
                   Forgot your password?
-                </Link>
+                </div>
               </div>
+              {open ? (
+                <ForgotPasswordCard setOpen={setOpen} role="user" />
+              ) : null}
             </div>
             <div>
               <button
@@ -181,6 +186,99 @@ const Login = () => {
               </Link>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ForgotPasswordCard = ({ setOpen, role }) => {
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    if (validateForm()) {
+      
+      await axios
+        .post(`${server}/auth/reset`, {
+          role,
+          email: email
+        })
+        .then((res) => {
+          setOpen(false);
+          toast.success(res.data.message);
+          setErrors({});
+          setEmail('');
+          console.log(res);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    }
+  };
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+    // Clear the error for email when the user starts typing
+    setErrors((prevErrors) => ({ ...prevErrors, email: undefined }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'Enter a valid email address';
+    }
+
+    setErrors((prevErrors) => ({ ...prevErrors, ...newErrors }));
+    return Object.keys(newErrors).length === 0;
+  };
+
+  return (
+    <div className="fixed w-full h-screen top-0 left-0 bg-[#1a1a1a30] z-40 flex items-center justify-center  ">
+      <div className=" min-w-[40%] 1200px:min-w-[30%]  800px:max-w-[50%] 1200px:w-[35%] h-[45%] bg-white rounded-lg  shadow-xl relative p-8 800px:p-4">
+        <RxCross1
+          size={20}
+          className="absolute right-3 top-3 z-50 cursor-pointer"
+          onClick={() => setOpen(false)}
+        />
+        <div className="flex flex-col justify-evenly">
+          <h4 className="my-8 text-center text-3xl font-extrabold text-gray-900">
+            Enter the Email Address
+          </h4>
+
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm md:text-base font-medium text-gray-700"
+            >
+              Email address
+            </label>
+            <div className="mt-1">
+              <input
+                type="email"
+                name="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={handleChangeEmail}
+                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm md:text-base"
+              />
+            </div>
+            <div className="text-red-500 text-sm mt-2 mb-4">
+              {errors.email && errors.email}
+            </div>
+          </div>
+          <button
+            onClick={handleSubmit}
+            className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black"
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>

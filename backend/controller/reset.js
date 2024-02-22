@@ -48,7 +48,7 @@ router.post('/reset', async (req, res, next) => {
       await sendMail({
         email: person.email,
         subject: 'Reset Your Password',
-        message: `Hello ${firstName},\n\nPlease click on the link to reset your Password: ${ResetTokenUrl}.\n\nThis link is valid for 5 minutes.`
+        message: `Hello ${firstName},\nPlease click on the link to reset your Password: ${ResetTokenUrl}\nThis link is valid for 5 minutes.`
       });
       return res.status(201).json({
         success: true,
