@@ -75,7 +75,7 @@ const Login = () => {
           <div className="flex items-center justify-center">
             <Link to="/">
               <img
-                className="h-[90px] w-[100px] scale-75"
+                className="h-[90px] w-[100px] scale-75 "
                 src={images.Logo}
                 alt="Logo"
               />

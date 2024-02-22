@@ -1,14 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styles from "../../../styles/styles";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styles from '../../../styles/styles';
+import images from '../../../Assests';
 
 const Hero = () => {
   return (
     <div
       className={`relative min-h-[70vh] 800px:min-h-[80vh] w-full bg-no-repeat ${styles.noramlFlex}`}
       style={{
-        backgroundImage:
-          "url(https://themes.rslahmed.dev/rafcart/assets/images/banner-2.jpg)",
+        backgroundImage: `url(${images.banner_2})`
       }}
     >
       <div className={`${styles.section} w-[90%] 800px:w-[60%]`}>
@@ -19,11 +19,10 @@ const Hero = () => {
         </h1>
         <p className="pt-5 text-[16px] font-[Poppins] font-[400] text-[#000000ba]">
           Unveil curated elegance crafted from our inspired home. Each product
-          embodies meticulous artistry,<br /> blending essential elements to bring
-          sophistication to your space. Elevate your surroundings with <br /> our
-          quality creations.
-          Explore now and embrace the beauty nurtured within our
-          offerings.
+          embodies meticulous artistry,
+          <br /> blending essential elements to bring sophistication to your
+          space. Elevate your surroundings with <br /> our quality creations.
+          Explore now and embrace the beauty nurtured within our offerings.
         </p>
         <Link to="/products" className="inline-block">
           <div className={`${styles.button} mt-5`}>
