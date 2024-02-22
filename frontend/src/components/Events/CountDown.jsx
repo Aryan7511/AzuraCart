@@ -1,6 +1,6 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { server } from "../../server";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { server } from '../../server';
 
 const CountDown = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -30,7 +30,7 @@ const CountDown = ({ data }) => {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+        seconds: Math.floor((difference / 1000) % 60)
       };
     }
 
@@ -43,8 +43,8 @@ const CountDown = ({ data }) => {
     }
 
     return (
-      <span className="text-[25px] text-[#475ad2]">
-        {timeLeft[interval]} {interval}{" "}
+      <span key={interval} className="text-[25px] text-[#475ad2]">
+        {timeLeft[interval]} {interval}{' '}
       </span>
     );
   });

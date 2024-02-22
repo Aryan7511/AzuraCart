@@ -13,7 +13,7 @@ const sendMail = async (options) => {
 
   const mailOptions = {
     from: {
-      name: "E-SHOP",
+      name: "AzuraCart",
       address: process.env.SMPT_MAIL,
     },
     to: options.email,

@@ -47,7 +47,9 @@ import coupon from './controller/coupounCode.js';
 import payment from './controller/payment.js';
 import order from './controller/order.js';
 import withdraw from './controller/withdraw.js';
+import reset from './controller/reset.js';
 
+app.use('/api/v2/auth', reset);
 app.use('/api/v2/user', user);
 app.use('/api/v2/shop', shop);
 app.use('/api/v2/product', product);

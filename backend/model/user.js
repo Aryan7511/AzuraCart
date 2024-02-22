@@ -1,66 +1,66 @@
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter your name!"],
+    required: [true, 'Please enter your name!']
   },
   email: {
     type: String,
-    required: [true, "Please enter your email address"],
+    required: [true, 'Please enter your email address']
   },
   password: {
     type: String,
-    required: [true, "Please enter your password"],
-    minLength: [6, "Password should be greater than 6 characters"],
-    select: false,
+    required: [true, 'Please enter your password'],
+    minLength: [6, 'Password should be greater than 6 characters'],
+    select: false
   },
   phoneNumber: {
-    type: Number,
+    type: Number
   },
   addresses: [
     {
       country: {
-        type: String,
+        type: String
       },
       city: {
-        type: String,
+        type: String
       },
       address1: {
-        type: String,
+        type: String
       },
       address2: {
-        type: String,
+        type: String
       },
       zipCode: {
-        type: Number,
+        type: Number
       },
       addressType: {
-        type: String,
-      },
-    },
+        type: String
+      }
+    }
   ],
   role: {
     type: String,
-    default: "user",
+    default: 'user'
   },
   avatar: {
     type: String,
-    required: true,
+    required: true
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now()
   },
-  resetPasswordToken: String,
-  resetPasswordTime: Date,
+  resetToken: String,
+  resetTokenExpiration: Date
 });
 
 //  Hash password
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
     next();
   }
 
@@ -70,7 +70,7 @@ userSchema.pre("save", async function (next) {
 // jwt token
 userSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRES,
+    expiresIn: process.env.JWT_EXPIRES
   });
 };
 
@@ -78,5 +78,5 @@ userSchema.methods.getJwtToken = function () {
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 export default User;

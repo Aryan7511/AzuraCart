@@ -107,8 +107,6 @@ const Header = ({ activeHeading }) => {
             ) : null}
           </div>
 
-          {console.log(user)}
-
           {user && (
             <div className={`${styles.button}`}>
               <Link

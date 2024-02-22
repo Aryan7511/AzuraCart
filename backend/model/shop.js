@@ -1,82 +1,82 @@
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const shopSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter your shop name!"],
+    required: [true, 'Please enter your shop name!']
   },
   email: {
     type: String,
-    required: [true, "Please enter your shop email address"],
+    required: [true, 'Please enter your shop email address']
   },
   password: {
     type: String,
-    required: [true, "Please enter your password"],
-    minLength: [6, "Password should be greater than 6 characters"],
-    select: false,
+    required: [true, 'Please enter your password'],
+    minLength: [6, 'Password should be greater than 6 characters'],
+    select: false
   },
   description: {
-    type: String,
+    type: String
   },
   address: {
     type: String,
-    required: true,
+    required: true
   },
   phoneNumber: {
     type: Number,
-    required: true,
+    required: true
   },
   role: {
     type: String,
-    default: "Seller",
+    default: 'Seller'
   },
   avatar: {
     type: String,
-    required: true,
+    required: true
   },
   zipCode: {
     type: Number,
-    required: true,
+    required: true
   },
   withdrawMethod: {
-    type: Object,
+    type: Object
   },
   availableBalance: {
     type: Number,
-    default: 0,
+    default: 0
   },
   transections: [
     {
       amount: {
         type: Number,
-        required: true,
+        required: true
       },
       status: {
         type: String,
-        default: "Processing",
+        default: 'Processing'
       },
       createdAt: {
         type: Date,
-        default: Date.now(),
+        default: Date.now()
       },
       updatedAt: {
-        type: Date,
-      },
-    },
+        type: Date
+      }
+    }
   ],
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now()
   },
-  resetPasswordToken: String,
-  resetPasswordTime: Date,
+  resetToken: String,
+  resetTokenExpiration: Date
 });
 
 // Hash password
-shopSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+shopSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
     next();
   }
   this.password = await bcrypt.hash(this.password, 10);
@@ -85,7 +85,7 @@ shopSchema.pre("save", async function (next) {
 // jwt token
 shopSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRES,
+    expiresIn: process.env.JWT_EXPIRES
   });
 };
 
@@ -94,5 +94,5 @@ shopSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const Shop = mongoose.model("Shop", shopSchema);
+const Shop = mongoose.model('Shop', shopSchema);
 export default Shop;
