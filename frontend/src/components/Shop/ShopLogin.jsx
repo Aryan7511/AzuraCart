@@ -7,6 +7,7 @@ import { server } from '../../server';
 import { toast } from 'react-toastify';
 import images from '../../Assests';
 import { RxCross1 } from 'react-icons/rx';
+import { CgSpinner } from 'react-icons/cg';
 
 const ShopLogin = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const ShopLogin = () => {
   const [visible, setVisible] = useState(false);
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -38,6 +40,7 @@ const ShopLogin = () => {
     e.preventDefault();
 
     if (validateForm()) {
+      setIsRequesting(true);
       await axios
         .post(
           `${server}/shop/login-shop`,
@@ -48,11 +51,13 @@ const ShopLogin = () => {
           { withCredentials: true }
         )
         .then((res) => {
+          setIsRequesting(false);
           toast.success('Login Success!');
           navigate('/dashboard');
           window.location.reload(true);
         })
         .catch((err) => {
+          setIsRequesting(false);
           toast.error(err.response.data.message);
         });
     }
@@ -173,10 +178,15 @@ const ShopLogin = () => {
             </div>
             <div>
               <button
+                disabled={isRequesting}
                 type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black"
+                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black disabled:cursor-not-allowed "
               >
-                Submit
+                {isRequesting ? (
+                  <CgSpinner size={20} className=" inline animate-spin" />
+                ) : (
+                  <span>Submit</span>
+                )}
               </button>
             </div>
             <div className={`${styles.noramlFlex} w-full`}>
@@ -195,10 +205,12 @@ const ShopLogin = () => {
 const ForgotPasswordCard = ({ setOpen, role }) => {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({});
+  const [isRequesting, setIsRequesting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
     if (validateForm()) {
+      setIsRequesting(true);
       await axios
         .post(`${server}/auth/reset`, {
           role,
@@ -206,12 +218,14 @@ const ForgotPasswordCard = ({ setOpen, role }) => {
         })
         .then((res) => {
           setOpen(false);
+          setIsRequesting(false);
           toast.success(res.data.message);
           setErrors({});
           setEmail('');
           console.log(res);
         })
         .catch((err) => {
+          setIsRequesting(false);
           toast.error(err.response.data.message);
         });
     }
@@ -273,10 +287,32 @@ const ForgotPasswordCard = ({ setOpen, role }) => {
             </div>
           </div>
           <button
+            disabled={isRequesting}
             onClick={handleSubmit}
-            className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black"
+            className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black disabled:cursor-not-allowed "
           >
-            Submit
+            {isRequesting ? (
+              <CgSpinner size={20} className=" inline animate-spin" />
+            ) : (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"
+                  />
+                </svg>
+                &nbsp;
+                <span>Reset password</span>
+              </>
+            )}
           </button>
         </div>
       </div>

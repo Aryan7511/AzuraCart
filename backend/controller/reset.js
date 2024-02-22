@@ -19,7 +19,6 @@ router.post('/reset', async (req, res, next) => {
       return next(new ErrorHandler('Email not Provided!', 400));
     }
     const lowercaseRole = role.toLowerCase();
-    //  console.log(email,role);
     switch (lowercaseRole) {
       case 'user':
         person = await User.findOne({ email: email });

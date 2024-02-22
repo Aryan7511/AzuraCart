@@ -7,6 +7,7 @@ import { server } from '../../server';
 import { toast } from 'react-toastify';
 import { RxAvatar } from 'react-icons/rx';
 import images from '../../Assests';
+import { CgSpinner } from 'react-icons/cg';
 
 const ShopCreate = () => {
   const [email, setEmail] = useState('');
@@ -18,6 +19,7 @@ const ShopCreate = () => {
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isRequesting, setIsRequesting] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -99,6 +101,7 @@ const ShopCreate = () => {
     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
     if (validateForm()) {
+      setIsRequesting(true);
       const newForm = new FormData();
 
       newForm.append('file', avatar);
@@ -112,6 +115,7 @@ const ShopCreate = () => {
       axios
         .post(`${server}/shop/create-shop`, newForm, config)
         .then((res) => {
+          setIsRequesting(false);
           toast.success(res.data.message);
           setName('');
           setEmail('');
@@ -122,6 +126,7 @@ const ShopCreate = () => {
           setPhoneNumber('');
         })
         .catch((error) => {
+          setIsRequesting(false);
           toast.error(error.response.data.message);
         });
     }
@@ -337,11 +342,16 @@ const ShopCreate = () => {
             </div>
 
             <div>
-              <button
+            <button
+                disabled={isRequesting}
                 type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black"
+                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black disabled:cursor-not-allowed "
               >
-                Submit
+                {isRequesting ? (
+                  <CgSpinner size={20} className=" inline animate-spin" />
+                ) : (
+                  <span>Submit</span>
+                )}
               </button>
             </div>
             <div className={`${styles.noramlFlex} w-full`}>

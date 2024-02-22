@@ -5,6 +5,7 @@ import { server } from '../server';
 import { toast } from 'react-toastify';
 import images from '../Assests';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { CgSpinner } from 'react-icons/cg';
 
 const ResetPage = () => {
   const { reset_token } = useParams();
@@ -14,6 +15,7 @@ const ResetPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isRequesting, setIsRequesting] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -26,7 +28,8 @@ const ResetPage = () => {
     if (!confirmPassword.trim()) {
       newErrors.confirmPassword = 'Confirm Password is required';
     } else if (confirmPassword.length < 8) {
-      newErrors.confirmPassword = 'Confirm Password should be at least 8 characters long';
+      newErrors.confirmPassword =
+        'Confirm Password should be at least 8 characters long';
     }
 
     setErrors((prevErrors) => ({ ...prevErrors, ...newErrors }));
@@ -42,6 +45,7 @@ const ResetPage = () => {
     }
 
     if (validateForm()) {
+      setIsRequesting(true);
       await axios
         .post(`${server}/auth/change-password`, {
           token: reset_token,
@@ -50,9 +54,11 @@ const ResetPage = () => {
         .then((res) => {
           toast.success(res.data.message);
           setErrors({});
+          setIsRequesting(false);
           navigate('/');
         })
         .catch((err) => {
+          setIsRequesting(false);
           setPassword('');
           setConfirmPassword('');
           toast.error(err.response.data.message);
@@ -161,10 +167,32 @@ const ResetPage = () => {
 
             <div>
               <button
+                disabled={isRequesting}
                 type="submit"
-                className="group mb-2 relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black"
+                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black disabled:cursor-not-allowed "
               >
-                Submit
+                {isRequesting ? (
+                  <CgSpinner size={20} className=" inline animate-spin" />
+                ) : (
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="h-6 w-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"
+                      />
+                    </svg>
+                    &nbsp;
+                    <span>Reset password</span>
+                  </>
+                )}
               </button>
             </div>
           </form>

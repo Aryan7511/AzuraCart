@@ -7,6 +7,8 @@ import axios from 'axios';
 import { server } from '../../server';
 import { toast } from 'react-toastify';
 import images from '../../Assests';
+import { CgSpinner } from 'react-icons/cg';
+
 
 const Singup = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +17,8 @@ const Singup = () => {
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [errors, setErrors] = useState({});
+  const [isRequesting, setIsRequesting] = useState(false);
+
 
   const validateForm = () => {
     const newErrors = {};
@@ -69,6 +73,7 @@ const Singup = () => {
     e.preventDefault();
 
     if (validateForm()) {
+      setIsRequesting(true);
       const config = { headers: { 'Content-Type': 'multipart/form-data' } };
       const newForm = new FormData();
 
@@ -80,6 +85,7 @@ const Singup = () => {
       axios
         .post(`${server}/user/create-user`, newForm, config)
         .then((res) => {
+          setIsRequesting(false);
           toast.success(res.data.message);
           setName('');
           setEmail('');
@@ -88,6 +94,7 @@ const Singup = () => {
           setErrors({});
         })
         .catch((error) => {
+          setIsRequesting(false);
           toast.error(error.response.data.message);
         });
     }
@@ -227,11 +234,16 @@ const Singup = () => {
             </div>
 
             <div>
-              <button
+            <button
+                disabled={isRequesting}
                 type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black"
+                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black disabled:cursor-not-allowed "
               >
-                Submit
+                {isRequesting ? (
+                  <CgSpinner size={20} className=" inline animate-spin" />
+                ) : (
+                  <span>Submit</span>
+                )}
               </button>
             </div>
             <div className={`${styles.noramlFlex} w-full`}>

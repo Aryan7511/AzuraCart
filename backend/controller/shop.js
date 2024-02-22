@@ -18,7 +18,7 @@ router.post(
   upload.single('file'),
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { email } = req.body;
+      const { email ,name} = req.body;
       const sellerEmail = await Shop.findOne({ email });
       if (sellerEmail) {
         //deleting avater file so that the file didn't get created in uploads when seller email is already register
@@ -37,7 +37,7 @@ router.post(
       const fileUrl = path.join(filename);
 
       const seller = {
-        name: req.body.name,
+        name: name,
         email: email,
         password: req.body.password,
         avatar: fileUrl,
@@ -46,15 +46,16 @@ router.post(
         zipCode: req.body.zipCode
       };
 
-      const activationToken = createActivationToken(seller);
 
+      const firstName = name.split(' ')[0];
+      const activationToken = createActivationToken(seller);
       const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
 
       try {
         await sendMail({
           email: seller.email,
           subject: 'Activate your Shop',
-          message: `Hello ${seller.name}, please click on the link to activate your shop: ${activationUrl}`
+          message: `Hello ${firstName}, please click on the link to activate your shop: ${activationUrl}`
         });
         res.status(201).json({
           success: true,
