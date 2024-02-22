@@ -107,14 +107,32 @@ const Header = ({ activeHeading }) => {
             ) : null}
           </div>
 
-          <div className={`${styles.button}`}>
-            <Link to={`${isSeller ? '/dashboard' : '/shop-create'}`}>
-              <h1 className="text-[#fff] flex items-center">
-                {isSeller ? 'Go Dashboard' : 'Become Seller'}{' '}
-                <IoIosArrowForward className="ml-1" />
-              </h1>
-            </Link>
-          </div>
+          {console.log(user)}
+
+          {user && (
+            <div className={`${styles.button}`}>
+              <Link
+                to={`${
+                  user?.role === 'user' ? '/profile' : '/admin/dashboard'
+                }`}
+              >
+                <h1 className="text-[#fff] flex items-center">
+                  Dashboard <IoIosArrowForward className="ml-1" />
+                </h1>
+              </Link>
+            </div>
+          )}
+
+          {!user && (
+            <div className={`${styles.button}`}>
+              <Link to={`${isSeller ? '/dashboard' : '/shop-create'}`}>
+                <h1 className="text-[#fff] flex items-center">
+                  {isSeller ? 'Go Dashboard' : 'Become Seller'}{' '}
+                  <IoIosArrowForward className="ml-1" />
+                </h1>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
       <div

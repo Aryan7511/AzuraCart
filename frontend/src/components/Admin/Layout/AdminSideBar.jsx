@@ -8,7 +8,7 @@ import { HiOutlineUserGroup } from 'react-icons/hi';
 import { BsHandbag } from 'react-icons/bs';
 import { MdOutlineLocalOffer } from 'react-icons/md';
 import { AiOutlineSetting } from 'react-icons/ai';
-import { GrUserManager } from 'react-icons/gr';
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
 const AdminSideBar = ({ active }) => {
   return (
@@ -48,7 +48,7 @@ const AdminSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link to="/admin-sellers" className="w-full flex items-center">
-          <GrWorkshop
+          <AiOutlineUsergroupAdd
             size={30}
             color={`${active === 3 ? 'crimson' : '#555'}`}
           />

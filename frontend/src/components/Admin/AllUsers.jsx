@@ -33,26 +33,26 @@ const AllUsers = () => {
   };
 
   const columns = [
-    { field: 'id', headerName: 'User ID', minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'User ID', minWidth: 250, flex: 0.8 },
 
     {
       field: 'name',
       headerName: 'name',
-      minWidth: 130,
-      flex: 0.7
+      minWidth: 150,
+      flex: 0.8
     },
     {
       field: 'email',
       headerName: 'Email',
       type: 'text',
-      minWidth: 130,
-      flex: 0.7
+      minWidth: 250,
+      flex: 0.8
     },
     {
       field: 'role',
       headerName: 'User Role',
       type: 'text',
-      minWidth: 130,
+      minWidth: 100,
       flex: 0.7
     },
 
@@ -60,14 +60,14 @@ const AllUsers = () => {
       field: 'joinedAt',
       headerName: 'joinedAt',
       type: 'text',
-      minWidth: 130,
-      flex: 0.8
+      minWidth: 100,
+      flex: 0.6
     },
 
     {
       field: ' ',
-      flex: 1,
-      minWidth: 150,
+      flex: 0.7,
+      minWidth: 100,
       headerName: 'Delete User',
       type: 'number',
       sortable: false,

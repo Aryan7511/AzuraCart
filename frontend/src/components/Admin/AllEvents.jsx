@@ -17,12 +17,12 @@ const AllEvents = () => {
   }, []);
 
   const columns = [
-    { field: 'id', headerName: 'Product Id', minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'Product Id', minWidth: 250, flex: 0.8 },
     {
       field: 'name',
       headerName: 'Name',
       minWidth: 180,
-      flex: 1.4
+      flex: 1
     },
     {
       field: 'price',
@@ -47,7 +47,7 @@ const AllEvents = () => {
     },
     {
       field: 'Preview',
-      flex: 0.8,
+      flex: 0.6,
       minWidth: 100,
       headerName: '',
       type: 'number',

@@ -33,7 +33,7 @@ const EventCard = ({ active, data }) => {
     >
       <div className="w-full lg:-w[50%] m-auto">
         <img
-          className="h-[500px]"
+          className="h-[200px] 400px:h-[250px] 800px:h-[300px] w-full object-contain"
           src={`${backend_url}${data.images[0]}`}
           alt=""
         />

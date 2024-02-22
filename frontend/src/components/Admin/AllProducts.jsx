@@ -1,11 +1,8 @@
 import { Button } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 import React, { useEffect } from 'react';
-import { AiOutlineDelete, AiOutlineEye } from 'react-icons/ai';
-import { useDispatch, useSelector } from 'react-redux';
+import { AiOutlineEye } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import { getAllProductsShop } from '../../redux/actions/product';
-import { deleteProduct } from '../../redux/actions/product';
 import Loader from '../Layout/Loader';
 import axios from 'axios';
 import { server } from '../../server';
@@ -26,11 +23,11 @@ const AllProducts = () => {
   }, []);
 
   const columns = [
-    { field: 'id', headerName: 'Product Id', minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'Product Id', minWidth: 250, flex: 0.8 },
     {
       field: 'name',
       headerName: 'Name',
-      minWidth: 180,
+      minWidth: 200,
       flex: 1.4
     },
     {
@@ -51,12 +48,12 @@ const AllProducts = () => {
       field: 'sold',
       headerName: 'Sold out',
       type: 'number',
-      minWidth: 130,
+      minWidth: 100,
       flex: 0.6
     },
     {
       field: 'Preview',
-      flex: 0.8,
+      flex: 0.6,
       minWidth: 100,
       headerName: '',
       type: 'number',

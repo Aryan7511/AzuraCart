@@ -1,46 +1,46 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   AiOutlineArrowRight,
   AiOutlineCamera,
-  AiOutlineDelete,
-} from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
-import { backend_url, server } from "../../server";
-import styles from "../../styles/styles";
-import { DataGrid } from "@material-ui/data-grid";
-import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import { MdTrackChanges } from "react-icons/md";
-import { RxCross1 } from "react-icons/rx";
+  AiOutlineDelete
+} from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import { backend_url, server } from '../../server';
+import styles from '../../styles/styles';
+import { DataGrid } from '@material-ui/data-grid';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { MdTrackChanges } from 'react-icons/md';
+import { RxCross1 } from 'react-icons/rx';
 import {
   deleteUserAddress,
   loadUser,
   updatUserAddress,
-  updateUserInformation,
-} from "../../redux/actions/user";
-import { Country, State } from "country-state-city";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { getAllOrdersOfUser } from "../../redux/actions/order";
+  updateUserInformation
+} from '../../redux/actions/user';
+import { Country, State } from 'country-state-city';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { getAllOrdersOfUser } from '../../redux/actions/order';
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
   const [name, setName] = useState(user && user.name);
   const [email, setEmail] = useState(user && user.email);
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [avatar, setAvatar] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch({ type: "clearErrors" });
+      dispatch({ type: 'clearErrors' });
     }
     if (successMessage) {
       toast.success(successMessage);
-      dispatch({ type: "clearMessages" });
+      dispatch({ type: 'clearMessages' });
     }
   }, [error, successMessage]);
 
@@ -55,18 +55,18 @@ const ProfileContent = ({ active }) => {
 
     const formData = new FormData();
 
-    formData.append("image", e.target.files[0]);
+    formData.append('image', e.target.files[0]);
 
     await axios
       .put(`${server}/user/update-avatar`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data'
         },
-        withCredentials: true,
+        withCredentials: true
       })
       .then((response) => {
-         dispatch(loadUser());
-         toast.success("avatar updated successfully!");
+        dispatch(loadUser());
+        toast.success('avatar updated successfully!');
       })
       .catch((error) => {
         toast.error(error);
@@ -149,7 +149,7 @@ const ProfileContent = ({ active }) => {
                 </div>
               </div>
               <input
-                className={`w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
+                className={`w-[250px] h-[40px] border border-[#2D6F6D] text-center text-[#2D6F6D] hover:border-[#46b6b2] hover:text-[#46b6b2] rounded-[3px] mt-8 cursor-pointer`}
                 required
                 value="Update"
                 type="submit"
@@ -207,41 +207,41 @@ const AllOrders = () => {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'Order ID', minWidth: 220, flex: 0.7 },
 
     {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
+      field: 'status',
+      headerName: 'Status',
+      minWidth: 110,
       flex: 0.7,
       cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
+        return params.getValue(params.id, 'status') === 'Delivered'
+          ? 'greenColor'
+          : 'redColor';
+      }
     },
     {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      field: 'itemsQty',
+      headerName: 'Items Qty',
+      type: 'number',
+      minWidth: 100,
+      flex: 0.6
     },
 
     {
-      field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "",
-      type: "number",
+      field: 'total',
+      headerName: 'Total',
+      type: 'number',
+      minWidth: 130,
+      flex: 0.8
+    },
+
+    {
+      field: ' ',
+      flex: 0.5,
+      minWidth: 50,
+      headerName: '',
+      type: 'number',
       sortable: false,
       renderCell: (params) => {
         return (
@@ -253,8 +253,8 @@ const AllOrders = () => {
             </Link>
           </>
         );
-      },
-    },
+      }
+    }
   ];
 
   const row = [];
@@ -264,8 +264,8 @@ const AllOrders = () => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
-        total: "US$ " + item.totalPrice,
-        status: item.status,
+        total: 'US$ ' + item.totalPrice,
+        status: item.status
       });
     });
 
@@ -291,46 +291,50 @@ const AllRefundOrders = () => {
     dispatch(getAllOrdersOfUser(user._id));
   }, []);
 
-  const eligibleOrders = orders && orders.filter((item) => {
-    return item.status === "Processing refund" || item.status === "Refund Success";
-  });
+  const eligibleOrders =
+    orders &&
+    orders.filter((item) => {
+      return (
+        item.status === 'Processing refund' || item.status === 'Refund Success'
+      );
+    });
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'Order ID', minWidth: 220, flex: 0.7 },
 
     {
-      field: "status",
-      headerName: "Status",
+      field: 'status',
+      headerName: 'Status',
       minWidth: 130,
       flex: 0.7,
       cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
+        return params.getValue(params.id, 'status') === 'Delivered'
+          ? 'greenColor'
+          : 'redColor';
+      }
     },
     {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      field: 'itemsQty',
+      headerName: 'Items Qty',
+      type: 'number',
+      minWidth: 100,
+      flex: 0.6
     },
 
     {
-      field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "",
-      type: "number",
+      field: 'total',
+      headerName: 'Total',
+      type: 'number',
+      minWidth: 130,
+      flex: 0.8
+    },
+
+    {
+      field: ' ',
+      flex: 0.5,
+      minWidth: 100,
+      headerName: '',
+      type: 'number',
       sortable: false,
       renderCell: (params) => {
         return (
@@ -342,19 +346,18 @@ const AllRefundOrders = () => {
             </Link>
           </>
         );
-      },
-    },
+      }
+    }
   ];
-
   const row = [];
 
   eligibleOrders &&
-   eligibleOrders.forEach((item) => {
+    eligibleOrders.forEach((item) => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
-        total: "US$ " + item.totalPrice,
-        status: item.status,
+        total: 'US$ ' + item.totalPrice,
+        status: item.status
       });
     });
 
@@ -381,41 +384,41 @@ const TrackOrder = () => {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'Order ID', minWidth: 220, flex: 0.7 },
 
     {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
+      field: 'status',
+      headerName: 'Status',
+      minWidth: 140,
       flex: 0.7,
       cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
+        return params.getValue(params.id, 'status') === 'Delivered'
+          ? 'greenColor'
+          : 'redColor';
+      }
     },
     {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      field: 'itemsQty',
+      headerName: 'Items Qty',
+      type: 'number',
+      minWidth: 120,
+      flex: 0.4
     },
 
     {
-      field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "",
-      type: "number",
+      field: 'total',
+      headerName: 'Total',
+      type: 'number',
+      minWidth: 100,
+      flex: 0.8
+    },
+
+    {
+      field: ' ',
+      flex: 0.4,
+      minWidth: 50,
+      headerName: '',
+      type: 'number',
       sortable: false,
       renderCell: (params) => {
         return (
@@ -427,8 +430,8 @@ const TrackOrder = () => {
             </Link>
           </>
         );
-      },
-    },
+      }
+    }
   ];
 
   const row = [];
@@ -438,8 +441,8 @@ const TrackOrder = () => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
-        total: "US$ " + item.totalPrice,
-        status: item.status,
+        total: 'US$ ' + item.totalPrice,
+        status: item.status
       });
     });
 
@@ -457,9 +460,9 @@ const TrackOrder = () => {
 };
 
 const ChangePassword = () => {
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
@@ -472,9 +475,9 @@ const ChangePassword = () => {
       )
       .then((res) => {
         toast.success(res.data.success);
-        setOldPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -520,7 +523,7 @@ const ChangePassword = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <input
-              className={`w-[95%] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
+              className={`w-[95%] h-[40px] border border-[#2D6F6D] text-center text-[#2D6F6D] hover:border-[#46b6b2] hover:text-[#46b6b2] rounded-[3px] mt-8 cursor-pointer`}
               required
               value="Update"
               type="submit"
@@ -534,32 +537,32 @@ const ChangePassword = () => {
 
 const Address = () => {
   const [open, setOpen] = useState(false);
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
+  const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
   const [zipCode, setZipCode] = useState();
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
-  const [addressType, setAddressType] = useState("");
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
+  const [addressType, setAddressType] = useState('');
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const addressTypeData = [
     {
-      name: "Default",
+      name: 'Default'
     },
     {
-      name: "Home",
+      name: 'Home'
     },
     {
-      name: "Office",
-    },
+      name: 'Office'
+    }
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (addressType === "" || country === "" || city === "") {
-      toast.error("Please fill all the fields!");
+    if (addressType === '' || country === '' || city === '') {
+      toast.error('Please fill all the fields!');
     } else {
       dispatch(
         updatUserAddress(
@@ -572,12 +575,12 @@ const Address = () => {
         )
       );
       setOpen(false);
-      setCountry("");
-      setCity("");
-      setAddress1("");
-      setAddress2("");
+      setCountry('');
+      setCity('');
+      setAddress1('');
+      setAddress2('');
       setZipCode(null);
-      setAddressType("");
+      setAddressType('');
     }
   };
 

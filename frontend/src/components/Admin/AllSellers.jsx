@@ -12,6 +12,7 @@ import { getAllSellers } from '../../redux/actions/sellers';
 import { Link } from 'react-router-dom';
 import Loader from '../Layout/Loader';
 
+
 const AllSellers = () => {
   const dispatch = useDispatch();
   const { sellers, isLoading } = useSelector((state) => state.seller);
@@ -33,26 +34,26 @@ const AllSellers = () => {
   };
 
   const columns = [
-    { field: 'id', headerName: 'Seller ID', minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'Seller ID', minWidth: 220, flex: 0.8 },
 
     {
       field: 'name',
       headerName: 'name',
-      minWidth: 130,
-      flex: 0.7
+      minWidth: 200,
+      flex: 0.8
     },
     {
       field: 'email',
       headerName: 'Email',
       type: 'text',
-      minWidth: 130,
-      flex: 0.7
+      minWidth: 200,
+      flex: 0.8
     },
     {
       field: 'address',
       headerName: 'Seller Address',
       type: 'text',
-      minWidth: 130,
+      minWidth: 200,
       flex: 0.7
     },
 
@@ -60,13 +61,13 @@ const AllSellers = () => {
       field: 'joinedAt',
       headerName: 'joinedAt',
       type: 'text',
-      minWidth: 130,
-      flex: 0.8
+      minWidth: 100,
+      flex: 0.6
     },
     {
       field: '  ',
-      flex: 1,
-      minWidth: 150,
+      flex: 0.7,
+      minWidth: 100,
       headerName: 'Preview Shop',
       type: 'number',
       sortable: false,
@@ -84,8 +85,8 @@ const AllSellers = () => {
     },
     {
       field: ' ',
-      flex: 1,
-      minWidth: 150,
+      flex: 0.8,
+      minWidth: 100,
       headerName: 'Delete Seller',
       type: 'number',
       sortable: false,

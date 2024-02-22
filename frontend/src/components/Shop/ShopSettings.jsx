@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { backend_url, server } from "../../server";
-import { AiOutlineCamera } from "react-icons/ai";
-import styles from "../../styles/styles";
-import axios from "axios";
-import { loadSeller } from "../../redux/actions/user";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { backend_url, server } from '../../server';
+import { AiOutlineCamera } from 'react-icons/ai';
+import styles from '../../styles/styles';
+import axios from 'axios';
+import { loadSeller } from '../../redux/actions/user';
+import { toast } from 'react-toastify';
 
 const ShopSettings = () => {
   const { seller } = useSelector((state) => state.seller);
   const [avatar, setAvatar] = useState();
   const [name, setName] = useState(seller && seller.name);
   const [description, setDescription] = useState(
-    seller && seller.description ? seller.description : ""
+    seller && seller.description ? seller.description : ''
   );
   const [address, setAddress] = useState(seller && seller.address);
   const [phoneNumber, setPhoneNumber] = useState(seller && seller.phoneNumber);
@@ -27,18 +27,18 @@ const ShopSettings = () => {
 
     const formData = new FormData();
 
-    formData.append("image", e.target.files[0]);
+    formData.append('image', e.target.files[0]);
 
     await axios
       .put(`${server}/shop/update-shop-avatar`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data'
         },
-        withCredentials: true,
+        withCredentials: true
       })
       .then((res) => {
         dispatch(loadSeller());
-        toast.success("Avatar updated successfully!");
+        toast.success('Avatar updated successfully!');
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -56,12 +56,12 @@ const ShopSettings = () => {
           address,
           zipCode,
           phoneNumber,
-          description,
+          description
         },
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Shop info updated succesfully!");
+        toast.success('Shop info updated succesfully!');
         dispatch(loadSeller());
       })
       .catch((error) => {
@@ -121,7 +121,7 @@ const ShopSettings = () => {
               placeholder={`${
                 seller?.description
                   ? seller.description
-                  : "Enter your shop description"
+                  : 'Enter your shop description'
               }`}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -170,11 +170,11 @@ const ShopSettings = () => {
             />
           </div>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
+          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5  text-center ">
             <input
               type="submit"
               value="Update Shop"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} cursor-pointer !w-[95%] mb-4 800px:mb-0`}
               required
               readOnly
             />

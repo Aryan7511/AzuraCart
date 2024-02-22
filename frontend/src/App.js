@@ -19,7 +19,8 @@ import {
   SellerActivationPage,
   ShopLoginPage,
   OrderDetailsPage,
-  TrackOrderPage
+  TrackOrderPage,
+  ErrorPage
 } from './routes/Routes.js';
 import {
   ShopDashboardPage,
@@ -300,6 +301,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <ToastContainer
         position="top-right"

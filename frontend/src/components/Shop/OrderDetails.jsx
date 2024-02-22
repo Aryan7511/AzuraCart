@@ -79,7 +79,7 @@ const OrderDetails = () => {
 
       <div className="w-full flex items-center justify-between pt-6">
         <h5 className="text-[#00000084]">
-          Order ID: <span>#{data?._id?.slice(0, 8)}</span>
+          Order ID: <span>#{data?._id}</span>
         </h5>
         <h5 className="text-[#00000084]">
           Placed on: <span>{data?.createdAt?.slice(0, 10)}</span>
@@ -197,6 +197,8 @@ const OrderDetails = () => {
       >
         Update Status
       </div>
+      <br />
+
     </div>
   );
 };
