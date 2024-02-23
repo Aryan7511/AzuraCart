@@ -7,12 +7,14 @@ import { BsPencil } from 'react-icons/bs';
 import { RxCross1 } from 'react-icons/rx';
 import styles from '../../styles/styles';
 import { toast } from 'react-toastify';
+import { CgSpinner } from 'react-icons/cg';
 
 const AllWithdraw = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [withdrawData, setWithdrawData] = useState();
   const [withdrawStatus, setWithdrawStatus] = useState('Processing');
+  const [isUpdatingWithdraw, setIsUpdatingWithdraw] = useState(false);
 
   useEffect(() => {
     axios
@@ -82,6 +84,7 @@ const AllWithdraw = () => {
   ];
 
   const handleSubmit = async () => {
+    setIsUpdatingWithdraw(true);
     await axios
       .put(
         `${server}/withdraw/update-withdraw-request/${withdrawData.id}`,
@@ -91,9 +94,14 @@ const AllWithdraw = () => {
         { withCredentials: true }
       )
       .then((res) => {
+        setIsUpdatingWithdraw(false);
         toast.success('Withdraw request updated successfully!');
-        setData(res.data.withdraws);
+        window.location.reload(true);
         setOpen(false);
+      })
+      .catch((err) => {
+        setIsUpdatingWithdraw(false);
+        toast.error(err.response.data.message);
       });
   };
 
@@ -141,11 +149,16 @@ const AllWithdraw = () => {
               <option value={withdrawStatus}>Succeed</option>
             </select>
             <button
+              disabled={isUpdatingWithdraw}
               type="submit"
-              className={`block ${styles.button} text-white !h-[42px] mt-4 text-[18px]`}
+              className={`block ${styles.button} text-white !h-[42px] mt-4 text-[18px] disabled:cursor-not-allowed`}
               onClick={handleSubmit}
             >
-              Update
+              {isUpdatingWithdraw ? (
+                <CgSpinner size={20} className=" inline animate-spin" />
+              ) : (
+                <span>Update</span>
+              )}
             </button>
           </div>
         </div>

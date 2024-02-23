@@ -8,6 +8,7 @@ import { server } from '../../server';
 import { toast } from 'react-toastify';
 import { loadSeller } from '../../redux/actions/user';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { CgSpinner } from 'react-icons/cg';
 
 const WithdrawMoney = () => {
   const [open, setOpen] = useState(false);
@@ -15,6 +16,8 @@ const WithdrawMoney = () => {
   const { seller } = useSelector((state) => state.seller);
   const [paymentMethod, setPaymentMethod] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState(50);
+  const [isWithdrawing, setIsWithdrawing] = useState(false);
+
   const [bankInfo, setBankInfo] = useState({
     bankName: '',
     bankCountry: '',
@@ -86,6 +89,7 @@ const WithdrawMoney = () => {
     if (withdrawAmount < 50 || withdrawAmount > availableBalance) {
       toast.error("You can't withdraw this amount!");
     } else {
+      setIsWithdrawing(true);
       const amount = withdrawAmount;
       await axios
         .post(
@@ -94,7 +98,13 @@ const WithdrawMoney = () => {
           { withCredentials: true }
         )
         .then((res) => {
+          setIsWithdrawing(false);
+          setOpen(false);
           toast.success('Withdraw money request is successful!');
+        })
+        .catch((err) => {
+          setIsWithdrawing(false);
+          toast.error(err.response.data.message);
         });
     }
   };
@@ -301,12 +311,20 @@ const WithdrawMoney = () => {
                         onChange={(e) => setWithdrawAmount(e.target.value)}
                         className="800px:w-[100px] w-[full] border 800px:mr-3 p-1 rounded"
                       />
-                      <div
-                        className={`${styles.button} !h-[42px] text-white`}
+                      <button
+                        disabled={isWithdrawing}
                         onClick={withdrawHandler}
+                        className={`${styles.button} !h-[42px] text-white disabled:cursor-not-allowed`}
                       >
-                        Withdraw
-                      </div>
+                        {isWithdrawing ? (
+                          <CgSpinner
+                            size={20}
+                            className=" inline animate-spin"
+                          />
+                        ) : (
+                          <span>Withdraw</span>
+                        )}
+                      </button>
                     </div>
                   </div>
                 ) : (
