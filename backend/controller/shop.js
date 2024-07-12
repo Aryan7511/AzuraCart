@@ -19,7 +19,7 @@ router.post(
   upload.single('file'),
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { email ,name} = req.body;
+      const { email, name } = req.body;
       const sellerEmail = await Shop.findOne({ email });
       if (sellerEmail) {
         //deleting avater file so that the file didn't get created in uploads when seller email is already register
@@ -46,7 +46,6 @@ router.post(
         phoneNumber: req.body.phoneNumber,
         zipCode: req.body.zipCode
       };
-
 
       const firstName = name.split(' ')[0];
       const activationToken = createActivationToken(seller);
@@ -180,7 +179,9 @@ router.get(
     try {
       res.cookie('seller_token', null, {
         expires: new Date(Date.now()),
-        httpOnly: true
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None'
       });
       res.status(201).json({
         success: true,

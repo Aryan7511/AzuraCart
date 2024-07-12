@@ -41,7 +41,7 @@ router.post('/create-user', upload.single('file'), async (req, res, next) => {
       password: password,
       avatar: fileUrl
     };
-    
+
     const firstName = name.split(' ')[0];
     const activationToken = createActivationToken(user);
     const activationUrl = `${frontend_url}/activation/${activationToken}`;
@@ -166,7 +166,9 @@ router.get(
     try {
       res.cookie('token', null, {
         expires: new Date(Date.now()),
-        httpOnly: true
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None'
       });
       res.status(201).json({
         success: true,
