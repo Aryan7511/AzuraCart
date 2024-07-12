@@ -9,6 +9,7 @@ import path from 'path';
 import fs from 'fs';
 import sendToken from '../utils/jwtToken.js';
 import { isAdmin, isAuthenticated } from '../middleware/auth.js';
+import { frontend_url } from '../url.js';
 
 const router = express.Router();
 
@@ -43,7 +44,7 @@ router.post('/create-user', upload.single('file'), async (req, res, next) => {
     
     const firstName = name.split(' ')[0];
     const activationToken = createActivationToken(user);
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `${frontend_url}/activation/${activationToken}`;
     try {
       await sendMail({
         email: user.email,

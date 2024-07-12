@@ -7,7 +7,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import path from 'path';
-import { fileURLToPath } from "url";
+import { fileURLToPath } from 'url';
+import { frontend_url } from './url.js';
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: frontend_url,
     credentials: true
   })
 );

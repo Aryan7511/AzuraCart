@@ -3,6 +3,7 @@ import User from '../model/user.js';
 import sendMail from '../utils/sendMail.js';
 import Shop from '../model/shop.js';
 import ErrorHandler from '../utils/ErrorHandler.js';
+import { frontend_url } from '../url.js';
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ router.post('/reset', async (req, res, next) => {
     await person.save();
 
     const firstName = person.name.split(' ')[0];
-    const ResetTokenUrl = `http://localhost:3000/reset/${token}`;
+    const ResetTokenUrl = `${frontend_url}/reset/${token}`;
 
     try {
       await sendMail({

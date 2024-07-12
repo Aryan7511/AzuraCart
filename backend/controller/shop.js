@@ -9,6 +9,7 @@ import fs from 'fs';
 import sendShopToken from '../utils/shopToken.js';
 import { isAdmin, isAuthenticated, isSeller } from '../middleware/auth.js';
 import Shop from '../model/shop.js';
+import { frontend_url } from '../url.js';
 
 const router = express.Router();
 
@@ -49,7 +50,7 @@ router.post(
 
       const firstName = name.split(' ')[0];
       const activationToken = createActivationToken(seller);
-      const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
+      const activationUrl = `${frontend_url}/seller/activation/${activationToken}`;
 
       try {
         await sendMail({
