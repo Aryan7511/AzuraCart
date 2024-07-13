@@ -7,7 +7,6 @@ AzuraCart is a comprehensive full-stack MERN application designed to streamline 
 ⭐️ **AzuraCart is now live and can be accessed at the following link: [AzuraCart Deployment](https://azura-cart.vercel.app/)**
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
-SpeakEase is built using the following technologies:
 
 [![Stack Used](https://skillicons.dev/icons?i=react,redux,html,js,tailwind,nodejs,express,npm,mongodb,gmail,vercel)](https://skillicons.dev)
 
