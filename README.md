@@ -2,6 +2,10 @@
 
 AzuraCart is a comprehensive full-stack MERN application designed to streamline the online shopping experience. It allows customers to easily place and manage their orders, enables sellers to list and manage their products, and provides administrators with powerful tools to oversee and control the entire platform effectively.
 
+## 🌐 Deployment
+
+⭐️ **AzuraCart is now live and can be accessed at the following link: [AzuraCart Deployment](https://azura-cart.vercel.app/)**
+
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
 [![Stack Used](https://skillicons.dev/icons?i=react,redux,html,js,tailwind,nodejs,express,npm,mongodb,gmail,vercel)](https://skillicons.dev)
